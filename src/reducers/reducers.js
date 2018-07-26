@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { ADD_TODO, DELETE_TODO, CHANGE_TODO } from '../actions/actions'
+import { ADD_TODO, DELETE_TODO, CHANGE_TODO, ADD_EVENT } from '../actions/actions'
 
 function todo(state, action) {
    switch (action.type) {
@@ -39,7 +39,6 @@ function todos(state = [], action) {
          console.log(state)
          return state
       }
-
       case DELETE_TODO: {
 
          var index = state.findIndex((todo) => {
@@ -55,15 +54,17 @@ function todos(state = [], action) {
    }
 }
 
-function events(state = [{id:123, text:'hello', completed: false}], action) {
+function events(state = [], action) {
    switch (action.type) {
 
-      case ADD_TODO: {
-         //console.log(state);
+      case ADD_EVENT: {
+         console.log(action);
          return state.concat([{
-            id: action.id,
-            text: action.text,
-            completed: false,  
+            title: action.title,
+            cover_url: action.cover_url,
+            start_at: action.start_at,
+            end_at: action.end_at,
+            location: action.location,
          }])
       } 
 

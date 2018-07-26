@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { addTodo, deleteTodo, changeTodo } from './actions/actions'
 import EventList  from './components/EventList.js'
-import AddList  from './components/AddList.js'
+import AddEvent from './components/AddEvent.js'
 
 class Ap extends Component {
    render() {
@@ -11,7 +11,7 @@ class Ap extends Component {
          <Router>
             <Switch>
                <Route  path='/eventlists' component={EventList} />
-               <Route  path='/addlist' component={AddList} />
+               <Route  path='/addevent' component={AddEvent} />
             </Switch>
          </Router>
       )

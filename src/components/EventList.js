@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import List from './List.js'
+import Event from './Event.js'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -9,15 +9,15 @@ class EventList extends Component {
    render() {
 
    	const { dispatch, events } = this.props
-   	console.log(events);
+   	console.log('fdsfdsf');
       return (
          <div>
-         	<Link to="/addlist">Ad</Link>
+         	<Link to="/addevent" >Add</Link>
 
             {
                events.map((event) => (
-                 <List
-                     key = {event.id}
+                 <Event
+                     //key = {event.id}
                      {...event}
                   />
                ))
@@ -32,9 +32,9 @@ function select(state) {
       events: state.events
    }
 }
-EventList.defaultProps = {
-   id:1,
-   text:'etete',
-   completed:false,
-}
+// EventList.defaultProps = {
+//    id:1,
+//    text:'etete',
+//    completed:false,
+// }
 export default connect(select)(EventList);

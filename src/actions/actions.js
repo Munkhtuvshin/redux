@@ -1,6 +1,8 @@
 export const ADD_TODO = 'ADD_TODO'
 export const DELETE_TODO = 'DELETE_TODO'
 export const CHANGE_TODO = 'CHANGE_TODO'
+export const ADD_EVENT = 'ADD_EVENT'
+
 
 let nextTodoId = 0;
 
@@ -18,9 +20,9 @@ export function deleteTodo(id) {
       id,
    };
 }
-export function changeTodo(id) {
+export function addEvent(event) {
    return {
-   	  type: CHANGE_TODO,
-      id,
+   	type: ADD_EVENT,
+      event,
    };
 }
