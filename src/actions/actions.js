@@ -5,7 +5,7 @@ export const ADD_EVENT = 'ADD_EVENT'
 
 
 let nextTodoId = 0;
-
+let eventId=0;
 export function addTodo(text) {
    return {
       type: ADD_TODO,
@@ -21,6 +21,8 @@ export function deleteTodo(id) {
    };
 }
 export function addEvent(event) {
+   
+   event.id=eventId++;
    return {
    	type: ADD_EVENT,
       event,

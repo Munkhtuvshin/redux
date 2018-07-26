@@ -58,7 +58,7 @@ function events(state = [], action) {
    switch (action.type) {
 
       case ADD_EVENT: {
-         console.log(action.event.title);
+         console.log(action.event);
          return state.concat([
             action.event
          ])

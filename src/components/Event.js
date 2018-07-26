@@ -11,11 +11,11 @@ export default class Event extends React.Component {
    }
 
    render() {
-      console.log(this.props.title);
+
       return (
          <div>
             
-            <img src='/logo.png'/>
+            <img src='logo.png'/>
             <h3>
               {this.props.title}
             </h3>

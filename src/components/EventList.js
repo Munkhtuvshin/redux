@@ -9,15 +9,14 @@ class EventList extends Component {
    render() {
 
    	const { dispatch, events } = this.props
-   	console.log('fdsfdsf');
       return (
          <div>
          	<Link to="/addevent" >Add</Link>
 
             {
-               events.map((event, i) => (
+               events.map((event) => (
                  <Event
-                     key={i}//i is this loop's iteration
+                     key={event.id}//i is this loop's iteration
                      {...event}
                   />
                ))
@@ -25,6 +24,7 @@ class EventList extends Component {
           </div>
       );
    }
+
 }
 
 function select(state) {
