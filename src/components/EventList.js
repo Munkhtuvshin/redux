@@ -3,6 +3,7 @@ import Event from './Event.js'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { deleteEvent } from '../actions/actions'
 
 class EventList extends Component {
 
@@ -18,6 +19,7 @@ class EventList extends Component {
                  <Event
                      key={event.id}//i is this loop's iteration
                      {...event}
+                     deleteEvent = {(id) => dispatch(deleteEvent(id))}
                   />
                ))
             }

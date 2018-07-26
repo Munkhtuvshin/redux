@@ -41,7 +41,7 @@ export default class Event extends React.Component {
             <button >
                edit
             </button>
-            <button >
+            <button onClick = {() => this.props.deleteEvent(this.props.id)} >
                delete
             </button>
          </div>

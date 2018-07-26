@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { ADD_TODO, DELETE_TODO, CHANGE_TODO, ADD_EVENT } from '../actions/actions'
+import { ADD_TODO, DELETE_TODO,DELETE_EVENT, CHANGE_TODO, ADD_EVENT } from '../actions/actions'
 
 function todo(state, action) {
    switch (action.type) {
@@ -63,7 +63,18 @@ function events(state = [], action) {
             action.event
          ])
       } 
+      case DELETE_EVENT: {
+         
+         var index = state.findIndex((event) => {
+            return event.id == action.id
+         })
 
+         state.splice(index, 1);
+
+         return [...state]
+
+
+      } 
       default:
          return state
    }

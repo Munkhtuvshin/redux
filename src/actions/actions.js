@@ -2,6 +2,7 @@ export const ADD_TODO = 'ADD_TODO'
 export const DELETE_TODO = 'DELETE_TODO'
 export const CHANGE_TODO = 'CHANGE_TODO'
 export const ADD_EVENT = 'ADD_EVENT'
+export const DELETE_EVENT = 'DELETE_EVENT'
 
 
 let nextTodoId = 0;
@@ -27,4 +28,13 @@ export function addEvent(event) {
    	type: ADD_EVENT,
       event,
    };
+}
+
+export function deleteEvent(id){
+
+   return {
+      type: DELETE_EVENT,
+      id
+   }
+
 }
