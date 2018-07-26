@@ -14,12 +14,33 @@ export default class Event extends React.Component {
       console.log(this.props.title);
       return (
          <div>
-            <label>
             
-            {this.props.title}
+            <img src='/logo.png'/>
+            <h3>
+              {this.props.title}
+            </h3>
             
-            </label> 
+            <label style={{
+                     marginRight: '30px'
+                   }}>
+              {this.props.start_at}
+            </label>
+            
+            <label style={{
+                     marginRight: '30px'
+                   }}>
+              {this.props.end_at}
+            </label>
+            
+            <label style={{
+                     marginRight: '20px'
+                   }}>
+              {this.props.location}
+            </label>
 
+            <button >
+               edit
+            </button>
             <button >
                delete
             </button>

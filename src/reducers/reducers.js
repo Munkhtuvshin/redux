@@ -58,14 +58,10 @@ function events(state = [], action) {
    switch (action.type) {
 
       case ADD_EVENT: {
-         console.log(action);
-         return state.concat([{
-            title: action.title,
-            cover_url: action.cover_url,
-            start_at: action.start_at,
-            end_at: action.end_at,
-            location: action.location,
-         }])
+         console.log(action.event.title);
+         return state.concat([
+            action.event
+         ])
       } 
 
       default:

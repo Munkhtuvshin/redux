@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom';
+import { BrowserRouter, NavLink } from 'react-router-dom';
+import { Redirect  } from 'react-router-dom'
 
 export default class AddEventForm extends React.Component {
 
@@ -10,6 +13,7 @@ constructor(props) {
       start_at: new Date(),
       end_at: new Date(),
       location: '',
+      navigate:false,
   }
 }
 
@@ -41,17 +45,23 @@ onEndAtChanged = (event) => {
 }
 
 render() {
+
       let {
         title,
         cover_url,
         start_at,
         end_at,
         location,
+        navigate
       } = this.state
+      
+      if (navigate) {
+        return <Redirect to="/eventlist" push={true} />
+      }
 
    return (
       <div>
-      
+
         <label>Title</label>
         <input 
           type='text'
@@ -108,6 +118,9 @@ render() {
             end_at,
             location
       })
+      this.setState({ navigate: true })
+      // eturn <Redirect to="/eventlist" push={true} />
+      //browserHistory.push('/eventlists')
 
    }
 }

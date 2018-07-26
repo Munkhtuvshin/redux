@@ -15,9 +15,9 @@ class EventList extends Component {
          	<Link to="/addevent" >Add</Link>
 
             {
-               events.map((event) => (
+               events.map((event, i) => (
                  <Event
-                     //key = {event.id}
+                     key={i}//i is this loop's iteration
                      {...event}
                   />
                ))
@@ -32,9 +32,5 @@ function select(state) {
       events: state.events
    }
 }
-// EventList.defaultProps = {
-//    id:1,
-//    text:'etete',
-//    completed:false,
-// }
+
 export default connect(select)(EventList);

@@ -10,7 +10,7 @@ class Ap extends Component {
       return (
          <Router>
             <Switch>
-               <Route  path='/eventlists' component={EventList} />
+               <Route  path='/eventlist' component={EventList} />
                <Route  path='/addevent' component={AddEvent} />
             </Switch>
          </Router>
