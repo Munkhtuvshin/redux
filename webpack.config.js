@@ -1,10 +1,21 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+var isProp = process.env.NODE_ENV === 'production';
+
+var cssDev = ['style-loader', 'css-loader', 'sass-loader'];
+var cssProp = ExtractTextPlugin.extract({
+  fallback: 'style-loader',
+  loader: ['css-loader', 'sass-loader'],
+  publicPath: '/public'
+})
+var cssConfig = isProd ? cssProd : cssDev;
 
 module.exports = ( env, options ) => {
   return {
-    entry: './src/block.js',
+    entry: './src/Ap.js',
 
     output: {
       path: path.resolve( __dirname, 'build' ),

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Redirect, Link  } from 'react-router-dom'
 
+
 export default class Event extends React.Component {
    // shouldComponentUpdate(nextProps, nextState) {
    //   if(nextProps.completeddasthis.props.completed) return true
@@ -19,7 +20,7 @@ export default class Event extends React.Component {
       return (
          <div>
             
-            <img src=''/>
+            <img src='logo.png'/>
             <h3>
               {this.props.title}
             </h3>

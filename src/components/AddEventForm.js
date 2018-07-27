@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom';
 import { BrowserRouter, NavLink } from 'react-router-dom';
 import { Redirect  } from 'react-router-dom'
+import AvatarEditor from 'react-avatar-editor'
 
 export default class AddEventForm extends React.Component {
 
@@ -29,9 +30,14 @@ onTitleChanged = (event) => {
 }
 
 onCoverChanged = (event) => {
-      this.setState({
-            cover_url: event.target.value
-      })
+      //console.log(event.target.files[0])
+      var reader = new FileReader()
+      debugger
+      reader.onload = function(e) {
+        console.log(e.target)
+      }
+      reader.readAsDataUrl(event.target.files[0])
+      
 }
 onStartAtChanged = (event) => {
       this.setState({
@@ -70,11 +76,15 @@ render() {
         /><br></br>
 
         <label>Photo</label>
-        <input 
-          type="file"
-          value={cover_url}
-          onChange={this.onCoverChanged}
-        /><br></br>
+        <AvatarEditor
+              image="https://image.ibb.co/m5hVYo/Workspace_1_039.png"
+              width={250}
+              height={250}
+              border={50}
+              color={[255, 255, 255, 0.6]} // RGBA
+              scale={1.2}
+              rotate={0}
+            />
 
         <label>Start time</label>
         <input 

@@ -56,7 +56,7 @@ function todos(state = [], action) {
 
 const eventInitial = {
    events: [],
-   selected_event: {}, //edit event selected_event = event //create edit selected_event connect uurchilj //{id:1, title: 'heel', cover_url: 'courl', start_at: '05/08/2018', end_at: '08/09/2018', location: 'locationv'}
+   selected_event: {},
 }
 
 function events(state = eventInitial, action) {
