@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { Redirect, Link  } from 'react-router-dom'
-import { Redirect, Link  } from 'react-router-dom'
-import { logo } from '../../public/logo.png'
 
 export default class Event extends React.Component {
    // shouldComponentUpdate(nextProps, nextState) {
@@ -21,7 +19,7 @@ export default class Event extends React.Component {
       return (
          <div>
             
-            <img src={logo}/>
+            <img src=''/>
             <h3>
               {this.props.title}
             </h3>

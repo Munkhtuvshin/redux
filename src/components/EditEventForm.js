@@ -8,6 +8,7 @@ export default class EditEventForm extends React.Component {
 constructor(props) {
   super(props);
   this.state = {
+      id: this.props.id,
       title: this.props.title,
       cover_url: this.props.cover_url,
       start_at: this.props.start_at,
@@ -100,6 +101,7 @@ render() {
    }
    editevent = () => {
       let {
+        id,
         title,
         cover_url,
         start_at,
@@ -108,11 +110,12 @@ render() {
       } = this.state
 
       this.props.editEvent({
-            title,
-            cover_url,
-            start_at,
-            end_at,
-            location
+        id,
+        title,
+        cover_url,
+        start_at,
+        end_at,
+        location
       })
       //this.setState({ navigate: true })
       // eturn <Redirect to="/eventlist" push={true} />

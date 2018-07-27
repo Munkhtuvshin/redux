@@ -32,6 +32,8 @@ class EventList extends Component {
       }
 
    	const { dispatch, events } = this.props
+
+    //alert(events.length)
       return (
          <div>
          	<Link to="/addevent" >Add</Link>

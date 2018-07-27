@@ -24,10 +24,10 @@ export function deleteTodo(id) {
    };
 }
 export function addEvent(event) {
-   event.id=eventId++
+   //event.id=eventId
    return {
    	type: ADD_EVENT,
-      ,//id:eventId++,
+      id:eventId++,
       event,
    };
 }

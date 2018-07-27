@@ -63,16 +63,24 @@ function events(state = eventInitial, action) {
    switch (action.type) {
 
       case ADD_EVENT: {
-         console.log(action.event.id);
+        
          let events = state.events
-         events = events.concat([action.event])
+         events = events.concat([{
+            id:action.id,
+            title:action.event.title,
+            cover_url:action.event.cover_url,
+            start_at: action.event.start_at,
+            end_at: action.event.end_at,
+            location:action.event.location,
+         }])
          //console.log(events)
          state.events = events
+          //console.log(state);
          //console.log(state.events);
          return state
       } 
       case EDIT_EVENT: {
-
+         console.log(action);
          var index = state.events.findIndex((event) => {
             return event.id == action.event.id
          })
@@ -88,21 +96,19 @@ function events(state = eventInitial, action) {
          //state.selected_event = action.event
          Object.assign(state.selected_event,
             action.event)
-         //console.log(action.event)
+         console.log(state)
          return state
       }
       case DELETE_EVENT: {
-         console.log(action.id);
+         //console.log(action);
          var index = state.events.findIndex((event) => {
             return event.id == action.id
          })
+         
+         var events = Object.assign([], state.events)
+         events.splice(index, 1);
 
-         let events = state.events
-         var g = events.splice(index, 1);
-         state.events = [...g]
-         return state
-
-
+         return Object.assign({}, state, { events })
       } 
       default:
          return state
