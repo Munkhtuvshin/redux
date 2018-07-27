@@ -8,10 +8,13 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-avatar-editor": "^11.0.4",
     "react-dom": "^16.4.1",
+    "react-dropzone": "^4.2.13",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
+    "semantic-ui": "^2.3.3",
+    "semantic-ui-css": "^2.3.3",
     "webpack-dev-server": "^3.1.5"
   },
   "scripts": {

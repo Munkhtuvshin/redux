@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
 import { deleteEvent, setEvent } from '../actions/actions'
+import 'semantic-ui-css/semantic.min.css';
+import { Button } from 'semantic-ui'
 
 class EventList extends Component {
 
@@ -18,7 +20,7 @@ class EventList extends Component {
    setEvent = (event) => {
       this.props.dispatch(setEvent(event))
       this.setState({ navigate: true })
-      //userdeg uildel //avmijlt messeage
+
    }
 
    render() {
@@ -36,8 +38,7 @@ class EventList extends Component {
     //alert(events.length)
       return (
          <div>
-         	<Link to="/addevent" >Add</Link>
-
+         	<Link to="/addevent" >    <Button primary>Add</Button> </Link>
             {
                events.map((event) => (
                  <Event

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Redirect, Link  } from 'react-router-dom'
+import AvatarEditor from 'react-avatar-editor'
 
 
 export default class Event extends React.Component {
@@ -8,19 +9,15 @@ export default class Event extends React.Component {
    //   return false;
    // }
 
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   console.log('Here is update = ' + this.props.id)  
-  // }
-
    render() {
-      
       
 
       return (
          <div>
             
-            <img src='logo.png'/>
+            <img
+            src={this.props.cover_url}/>
+
             <h3>
               {this.props.title}
             </h3>

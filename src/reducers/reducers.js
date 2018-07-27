@@ -63,7 +63,7 @@ function events(state = eventInitial, action) {
    switch (action.type) {
 
       case ADD_EVENT: {
-        
+         console.log(action);
          let events = state.events
          events = events.concat([{
             id:action.id,
