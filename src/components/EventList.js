@@ -2,12 +2,34 @@ import React, { Component } from 'react';
 import Event from './Event.js'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { deleteEvent } from '../actions/actions'
+import { Redirect, Link } from 'react-router-dom'
+import { deleteEvent, setEvent } from '../actions/actions'
 
 class EventList extends Component {
 
+   constructor(props) {
+    super(props);
+    this.state = {
+
+        navigate:false,
+    }
+  }
+
+   setEvent = (event) => {
+      this.props.dispatch(setEvent(event))
+      this.setState({ navigate: true })
+      //userdeg uildel //avmijlt messeage
+   }
+
    render() {
+
+      let {
+        navigate,
+      } = this.state
+
+      if (navigate) {
+        return <Redirect to="/editevent" push={true} />
+      }
 
    	const { dispatch, events } = this.props
       return (
@@ -20,6 +42,7 @@ class EventList extends Component {
                      key={event.id}//i is this loop's iteration
                      {...event}
                      deleteEvent = {(id) => dispatch(deleteEvent(id))}
+                     setEvent={this.setEvent}
                   />
                ))
             }
@@ -31,7 +54,7 @@ class EventList extends Component {
 
 function select(state) {
    return {
-      events: state.events
+      events: state.events.events
    }
 }
 

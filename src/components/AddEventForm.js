@@ -10,8 +10,8 @@ constructor(props) {
   this.state = {
       title: '',
       cover_url: '',
-      start_at: new Date(),
-      end_at: new Date(),
+      start_at: '2015-05-08',
+      end_at: '2015-08-09',
       location: '',
       navigate:false,
   }
