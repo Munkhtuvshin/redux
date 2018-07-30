@@ -100,7 +100,7 @@ function events(state = eventInitial, action) {
          return state
       }
       case DELETE_EVENT: {
-         //console.log(action);
+         console.log(action);
          var index = state.events.findIndex((event) => {
             return event.id == action.id
          })
