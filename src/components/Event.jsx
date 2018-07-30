@@ -10,11 +10,23 @@ export default class Event extends React.Component {
    //   if(nextProps.completeddasthis.props.completed) return true
    //   return false;
    // }
+   constructor(props) {
+    super(props);
+    this.state = {
+        no:this.props.id
+      }
+  }
 
    render() {
       
-      var g = this.props.id
-      g++
+    let {
+          no
+        } = this.state
+    let l= no+1;
+
+    let {
+      rowNumber
+    } = this.props
 
       return (
 
@@ -22,12 +34,12 @@ export default class Event extends React.Component {
         //    this.props.completed ? 'line-through' : 'none'
         // }
         <Table.Row >
-          <Table.Cell>{g}</Table.Cell>
+          <Table.Cell>{rowNumber}</Table.Cell>
           <Table.Cell><Image src={this.props.cover_url} width='30' height='30'/></Table.Cell>
           <Table.Cell>{this.props.title}</Table.Cell>
           <Table.Cell>{ moment(moment.utc(this.props.start_at)).format('LL')}</Table.Cell>
           <Table.Cell>{moment.utc(this.props.end_at).format('LL')}</Table.Cell>
-          <Table.Cell>{this.props.location}</Table.Cell>
+          <Table.Cell>{this.props.coordinate.lat}, {this.props.coordinate.lng}</Table.Cell>
           <Table.Cell>
             <center>
             <div className='onhovr'>

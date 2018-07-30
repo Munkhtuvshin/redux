@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "google-map-react": "1.0.4",
+    "google-maps-react": "^2.0.2",
     "moment": "^2.22.2",
     "react": "^16.4.1",
     "react-addons-css-transition-group": "^15.6.2",
@@ -15,8 +17,8 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
-    "semantic-ui": "^2.3.3",
     "semantic-ui-css": "^2.3.3",
+    "semantic-ui-react": "^0.82.1",
     "webpack-dev-server": "^3.1.5"
   },
   "scripts": {

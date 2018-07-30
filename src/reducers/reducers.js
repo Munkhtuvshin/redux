@@ -68,7 +68,7 @@ function events(state = eventInitial, action) {
          events = events.concat([{
             id:action.id,
             title:action.event.title,
-            cover_url:action.event.cover_url,
+            coordinate:action.event.coordinate,
             start_at: action.event.start_at,
             end_at: action.event.end_at,
             location:action.event.location,

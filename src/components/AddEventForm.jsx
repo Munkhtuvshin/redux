@@ -5,13 +5,12 @@ import { Redirect  } from 'react-router-dom'
 import Dropzone from 'react-dropzone'
 import Preview from './Preview.jsx'
 import AvatarEditor from 'react-avatar-editor'
-import { Button, Checkbox, Form, Divider, Segment } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Divider, Segment, Modal, Header, Icon, Image } from 'semantic-ui-react'
 import './addEventForm.css'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment';
-
-
+import GMap from './GMap.jsx'
 
 export default class AddEventForm extends React.Component {
 
@@ -22,8 +21,12 @@ constructor(props) {
       cover_url: '',
       start_at: moment(),
       end_at: moment(),
-      location: '',
       navigate:false,
+
+      coordinate:{
+        lat:47.78963221880257,
+        lng:107.38140106201172,  
+      } ,
 
       image: 'avatar.jpg',
       allowZoomOut: false,
@@ -34,6 +37,7 @@ constructor(props) {
       preview: null,
       width: 300,
       height: 300,
+      showMap:false,
   }
 }
 
@@ -126,72 +130,83 @@ handleNewImage = e => {
     this.setState({ image: acceptedFiles[0] })
   }
 
-onLocationChanged = (event) => {
-      this.setState({
-            location: event.target.value
-      })
-}
-onTitleChanged = (event) => {
-      this.setState({
-            title: event.target.value
-      })
-}
+  onTitleChanged = (event) => {
+        this.setState({
+              title: event.target.value
+        })
+  }
 
-onCoverChanged = (e) => {
-      
-    this.setState({ cover_url: e.target.files[0] })
-      
-}
-onStartAtChanged = (date) => {
-      this.setState({
-            start_at: date
-      })
-}
-onEndAtChanged = (date) => {
-      this.setState({
-            end_at: date
-      })
-}
-addevent = () => {
-    console.log('addevent');
-  let {
-    title,
-    cover_url,
-    start_at,
-    end_at,
-    location
-  } = this.state
+  onCoverChanged = (e) => {
+        
+      this.setState({ cover_url: e.target.files[0] })
+        
+  }
+  onStartAtChanged = (date) => {
+        this.setState({
+              start_at: date
+        })
+  }
+  onEndAtChanged = (date) => {
+        this.setState({
+              end_at: date
+        })
+  }
+  addevent = () => {
+      console.log('addevent');
+    let {
+      title,
+      cover_url,
+      start_at,
+      end_at,
+      coordinate
+    } = this.state
 
-  this.props.addEvent({
-        title,
-        cover_url,
-        start_at,
-        end_at,
-        location,
-  })
-  this.setState({ navigate: true })
+    this.props.addEvent({
+          title,
+          cover_url,
+          start_at,
+          end_at,
+          coordinate,
+    })
+    this.setState({ navigate: true })
+  }
+  showMap = () =>{
+    console.log(this.state.coordinate);
 
-}
+    this.setState({
+      showMap:true
+    });
+  }
+  uploadFile = (event) => {
+    ReactDOM.findDOMNode(this.refs.myInput).click();
+  }
+  addLocation = (coordinate) => {
 
-uploadFile = (event) => {
-  ReactDOM.findDOMNode(this.refs.myInput).click();
-}
-
+    this.setState({
+      coordinate:{
+        lat:coordinate.lat,
+        lng:coordinate.lng
+      }
+    });
+    //console.log(coordinate);
+  }
 
 render() {
-
+      var tr =false;
       let {
         title,
         cover_url,
         start_at,
         end_at,
-        location,
-        navigate
+        navigate,
+        coordinate,
+        showMap,
       } = this.state
       
       if (navigate) {
         return <Redirect to="/eventlist" push={true} />
       }
+      console.log(coordinate);
 
    return (
       <div className="addForm">
@@ -210,27 +225,31 @@ render() {
           <Form.Group widths='equal'>
             <label className='self' >Эхлэх хугацаа</label>
             <DatePicker
-              readOnly='true'
+              readOnly={true}
               selected={start_at}
               onChange={this.onStartAtChanged}
               dateFormat="LL" />
             <label className='marginLef'>Дуусах хугацаа</label>
             <DatePicker 
-              readOnly='true'
+              readOnly= {true}
               selected={end_at}
               onChange={this.onEndAtChanged}
               dateFormat="LL" />
-
           </Form.Group>
           <Divider />
 
           <Form.Field>
-            <label>Байршил</label>
-            <input 
-            placeholder='Байршил'
-            type="text" 
-            value={location}
-            onChange={this.onLocationChanged} />
+            <center>
+              <Button onClick={this.showMap} >Байршил сонгох</Button> 
+              {!!this.state.showMap && (
+                 <GMap 
+                  showMap={showMap}
+                  coordinate={coordinate}
+                  addLocation={this.addLocation}
+                />
+              )}
+
+            </center>
           </Form.Field>
           <Divider />
 

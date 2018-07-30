@@ -10,6 +10,7 @@ import './editEventForm.css'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment';
+import GMap from './GMap.jsx'
 
 export default class EditEventForm extends React.Component {
 
@@ -18,11 +19,12 @@ constructor(props) {
   this.state = {
       id: this.props.id,
       title: this.props.title,
-      cover_url: this.props.cover_url,
+      coordinate: this.props.coordinate,
       start_at: this.props.start_at,
       end_at: this.props.end_at,
       location: this.props.location,
       navigate:false,
+      showMap:false,
 
       image: 'avatar.jpg',
       allowZoomOut: false,
@@ -32,6 +34,7 @@ constructor(props) {
       preview: null,
       width: 300,
       height: 300,
+
     }
   }
 
@@ -95,6 +98,23 @@ constructor(props) {
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
+  showMap = () =>{
+    console.log(this.state.coordinate);
+
+    this.setState({
+      showMap:true
+    });
+  }
+  addLocation = (coordinate) => {
+
+    this.setState({
+      coordinate:{
+        lat:coordinate.lat,
+        lng:coordinate.lng
+      }
+    });
+    console.log(coordinate);
+  }
 render() {
 
       let {
@@ -102,7 +122,8 @@ render() {
         cover_url,
         start_at,
         end_at,
-        location,
+        coordinate,
+        showMap
       } = this.state
 
 
@@ -136,12 +157,17 @@ render() {
         <Divider />
 
         <Form.Field>
-          <label>Байршил</label>
-          <input 
-          placeholder='Байршил'
-          type="text" 
-          value={location}
-          onChange={this.onLocationChanged} />
+          <center>
+            <Button onClick={this.showMap} >Байршил өөрчлөх</Button> 
+            {!!this.state.showMap && (
+               <GMap 
+                showMap={showMap}
+                coordinate={coordinate}
+                addLocation={this.addLocation}
+              />
+            )}
+
+          </center>
         </Form.Field>
         <Divider />
 
@@ -251,7 +277,7 @@ render() {
     let {
       id,
       title,
-      cover_url,
+      coordinate,
       start_at,
       end_at,
       location
@@ -259,7 +285,7 @@ render() {
     this.props.editEvent({
       id,
       title,
-      cover_url,
+      coordinate,
       start_at,
       end_at,
       location

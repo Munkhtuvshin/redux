@@ -58,12 +58,13 @@ class EventList extends Component {
 
             <Table.Body>
               {
-                events.map((event) => (
+                events.map((event, i) => (
                     //m =event.id
                     //console.log(event)
                     //event.id=m+1
                   <Event
                     key={event.id}//i is this loop's iteration
+                    rowNumber={i + 1}
                     {...event}
                     deleteEvent = {(id) => dispatch(deleteEvent(id))}
                     setEvent={this.setEvent}  />
