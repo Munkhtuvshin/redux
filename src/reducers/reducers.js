@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
-import { ADD_TODO, DELETE_TODO,DELETE_EVENT, CHANGE_TODO, ADD_EVENT,SET_EVENT, EDIT_EVENT } from '../actions/actions'
+import { ADD_TODO, DELETE_TODO,DELETE_EVENT, CHANGE_TODO, ADD_EVENT,SET_EVENT, EDIT_EVENT, SET_ALL_EVENT } from '../actions/actions'
+var { Map, List,fromJS } = require('immutable');
 
 function todo(state, action) {
    switch (action.type) {
@@ -36,7 +37,7 @@ function todos(state = [], action) {
            completed: !selectedTodo.completed,
          });
 
-         console.log(state)
+         //console.log(state)
          return state
       }
       case DELETE_TODO: {
@@ -54,65 +55,82 @@ function todos(state = [], action) {
    }
 }
 
-const eventInitial = {
-   events: [],
+const eventInitial = fromJS({
+   events: [{id:0    , title:'init', coordinate:{ lat:12.1231, lng:14.1321}, start_at:null, end_at:null}],
    selected_event: {},
-}
+})
 
 function events(state = eventInitial, action) {
    switch (action.type) {
 
       case ADD_EVENT: {
-         console.log(action);
-         let events = state.events
-         events = events.concat([{
-            id:action.id,
-            title:action.event.title,
-            coordinate:action.event.coordinate,
-            start_at: action.event.start_at,
-            end_at: action.event.end_at,
-            location:action.event.location,
-         }])
-         //console.log(events)
-         state.events = events
-          //console.log(state);
-         //console.log(state.events);
-         return state
-      } 
-      case EDIT_EVENT: {
-         console.log(action);
-         var index = state.events.findIndex((event) => {
-            return event.id == action.event.id
-         })
-         console.log(index);
-         console.log(action.event);
-         let events = state.events
-         events[index] = action.event;
+         //console.log(action);
 
-         state.events = [...events]
-         return state
+         let events = state.get('events')
+         events = events.push(fromJS({ id:action.event.id, title:action.event.title, coordinate:action.event.coordinate, start_at:action.event.start_at, end_at:action.event.end_at }))
+         //console.log(events);
+         return state.set('events', events)
+
+      } 
+       case EDIT_EVENT: {
+
+         let events = state.get('events')
+         var index = events.findIndex((event) => {
+            return event.get('id') == action.event.id
+         })
+         //console.log(action.event.id);
+         //events[index] = action.event
+      //    console.log(action);
+      //    var index = state.events.findIndex((event) => {
+      //       return event.id == action.event.id
+      //    })
+      //    console.log(index);
+      //    console.log(action.event);
+      //    let events = state.events
+      //    events[index] = action.event;
+
+      //    state.events = [...events]
+      
+         return state.setIn(['events', index], fromJS(action.event));
       }
       case SET_EVENT: {
          //state.selected_event = action.event
-         Object.assign(state.selected_event,
-            action.event)
-         console.log(state)
-         return state
+         // Object.assign(state.selected_event,
+         //    action.event)
+         // console.log(state)
+         //console.log('set event');
+         //console.log(events);
+         return state.set('selected_event',fromJS({ id:action.event.id, title:action.event.title, coordinate:action.event.coordinate, start_at:action.event.start_at, end_at:action.event.end_at }))
       }
       case DELETE_EVENT: {
-         console.log(action);
-         var index = state.events.findIndex((event) => {
-            return event.id == action.id
-         })
-         
-         var events = Object.assign([], state.events)
-         events.splice(index, 1);
 
-         return Object.assign({}, state, { events })
-      } 
+         let events = state.get('events')
+         var index = events.findIndex((event) => {
+            return event.get('id') == action.id
+         })
+         // console.log(action);
+         // var index = state.events.findIndex((event) => {
+         //    return event.id == action.id
+         // })
+         
+         // var events = Object.assign([], state.events)
+         // events.splice(index, 1);
+
+          return state.removeIn(['events', index])
+      }
+      case SET_ALL_EVENT: {
+         //state.events = action.events
+         // let events = []
+         // events = events.concat(action.events)
+         // state.events = events
+         // console.log('set all');
+         // console.log(action.events)
+         return state.set('events', fromJS(action.events));
+      }  
       default:
          return state
    }
+
 }
 
 const todoApp = combineReducers({

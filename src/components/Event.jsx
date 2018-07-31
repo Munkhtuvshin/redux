@@ -18,11 +18,6 @@ export default class Event extends React.Component {
   }
 
    render() {
-      
-    let {
-          no
-        } = this.state
-    let l= no+1;
 
     let {
       rowNumber

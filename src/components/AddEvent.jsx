@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import AddEventForm from './AddEventForm.jsx'
 import { connect } from 'react-redux'
-import { addEvent } from '../actions/actions'
+import { addEvent, setAllEvent } from '../actions/actions'
 
 class AddEvent extends React.Component {
 
@@ -14,6 +14,7 @@ class AddEvent extends React.Component {
             {
                <AddEventForm 
                   addEvent = {(event) => dispatch(addEvent(event))}
+                  setAllEvent = {(events) => dispatch(setAllEvent(events)) }
                />
             }
          </div>

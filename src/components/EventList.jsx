@@ -1,27 +1,46 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Event from './Event.jsx'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
-import { deleteEvent, setEvent } from '../actions/actions'
+import { deleteEvent, setEvent, setAllEvent } from '../actions/actions'
 import 'semantic-ui-css/semantic.min.css'
 import './eventList.css';
 import { Button, Table } from 'semantic-ui-react'
+var { Map, List, fromJS } = require('immutable');
 
 class EventList extends Component {
 
+   componentWillMount() {
+      this.initStore()
+   }
    constructor(props) {
     super(props);
     this.state = {
 
         navigate:false,
     }
+    //this.initStore()
   }
+  initStore =  () =>{
 
+    axios.get('http://localhost:8081/event')
+      .then( (response) =>{
+        //console.log(response.status);
+        this.props.dispatch(setAllEvent(response.data))
+      })
+  }
    setEvent = (event) => {
       this.props.dispatch(setEvent(event))
       this.setState({ navigate: true })
-
+   }
+   deleteEvent = (id) => {
+      axios.delete('http://localhost:8081/event/'+id)
+      .then( (response) =>{
+        console.log(response.status);
+        this.props.dispatch(deleteEvent(id))
+      })
    }
 
    render() {
@@ -35,10 +54,9 @@ class EventList extends Component {
       }
 
    	const { dispatch, events } = this.props
-
-    //alert(events.length)
+    console.log(events);
+    //alert(events.length)***************************
       return (
-
         <div className='tableMargin'>
           <Link to="/addevent" >    <Button primary className='rightButton'>Add</Button> </Link>
 
@@ -66,14 +84,13 @@ class EventList extends Component {
                     key={event.id}//i is this loop's iteration
                     rowNumber={i + 1}
                     {...event}
-                    deleteEvent = {(id) => dispatch(deleteEvent(id))}
+                    deleteEvent = {this.deleteEvent}
                     setEvent={this.setEvent}  />
                   ))
                 }
             </Table.Body>
           </Table>
         </div>
-
       );
    }
 
@@ -81,8 +98,10 @@ class EventList extends Component {
 
 function select(state) {
    return {
-      events: state.events.events
+      events: state.events.getIn(['events']).toJS()
    }
 }
 
 export default connect(select)(EventList);
+
+

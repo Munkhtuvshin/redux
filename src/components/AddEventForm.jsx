@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import { BrowserRouter, NavLink } from 'react-router-dom';
 import { Redirect  } from 'react-router-dom'
 import Dropzone from 'react-dropzone'
@@ -39,7 +40,9 @@ constructor(props) {
       height: 300,
       showMap:false,
   }
+  //this.initStore()
 }
+
 
 handleNewImage = e => {
     this.setState({cover_url: this.editor.getImageScaledToCanvas().toDataURL()})
@@ -152,7 +155,7 @@ handleNewImage = e => {
         })
   }
   addevent = () => {
-      console.log('addevent');
+    console.log('addevent');
     let {
       title,
       cover_url,
@@ -161,13 +164,24 @@ handleNewImage = e => {
       coordinate
     } = this.state
 
-    this.props.addEvent({
+    axios.post('http://localhost:8081/event', {
           title,
           cover_url,
           start_at,
           end_at,
           coordinate,
     })
+    .then( (response) =>{
+      //console.log(response.status);
+        this.props.addEvent({
+            title,
+            cover_url,
+            start_at,
+            end_at,
+            coordinate,
+        })
+    })
+    
     this.setState({ navigate: true })
   }
   showMap = () =>{

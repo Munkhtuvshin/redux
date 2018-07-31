@@ -5,10 +5,11 @@ export const ADD_EVENT = 'ADD_EVENT'
 export const DELETE_EVENT = 'DELETE_EVENT'
 export const EDIT_EVENT = 'EDIT_EVENT'
 export const SET_EVENT = 'SET_EVENT'
+export const SET_ALL_EVENT = 'SET_ALL_EVENT'
 
 
 let nextTodoId = 0;
-let eventId=0;
+let eventId=2;
 export function addTodo(text) {
    return {
       type: ADD_TODO,
@@ -24,10 +25,9 @@ export function deleteTodo(id) {
    };
 }
 export function addEvent(event) {
-   //event.id=eventId
+   event.id=eventId++
    return {
    	type: ADD_EVENT,
-      id:eventId++,
       event,
    };
 }
@@ -38,7 +38,6 @@ export function deleteEvent(id){
       type: DELETE_EVENT,
       id,
    }
-
 }
 
 export function editEvent(event){
@@ -47,7 +46,6 @@ export function editEvent(event){
       type: EDIT_EVENT,
       event
    }
-
 }
 
 export function setEvent(event){
@@ -56,5 +54,11 @@ export function setEvent(event){
       type: SET_EVENT,
       event
    }
+}
+export function setAllEvent(events){
 
+   return {
+      type: SET_ALL_EVENT,
+      events
+   }
 }

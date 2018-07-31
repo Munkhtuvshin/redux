@@ -48,7 +48,7 @@ class EditEvent extends React.Component {
 
 function select(state) {
    return {
-      selected_event: state.events.selected_event
+      selected_event: state.events.getIn(['selected_event']).toJS()
    }
 }
 
