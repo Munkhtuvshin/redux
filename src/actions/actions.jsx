@@ -1,3 +1,7 @@
+import axios from 'axios';
+
+
+
 export const ADD_TODO = 'ADD_TODO'
 export const DELETE_TODO = 'DELETE_TODO'
 export const CHANGE_TODO = 'CHANGE_TODO'
@@ -25,11 +29,22 @@ export function deleteTodo(id) {
    };
 }
 export function addEvent(event) {
-   event.id=eventId++
+   
+   event.id=eventId;
+   eventId++;
+   console.log(event);
+   axios.post('http://localhost:8081/event', event)
+    .then( (response) =>{
+      return {
+        type: ADD_EVENT,
+        event,
+      };
+   })
+
    return {
-   	type: ADD_EVENT,
-      event,
-   };
+        type: ADD_EVENT,
+        event,
+      };
 }
 
 export function deleteEvent(id){

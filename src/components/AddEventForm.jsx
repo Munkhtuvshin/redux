@@ -163,27 +163,21 @@ handleNewImage = e => {
       end_at,
       coordinate
     } = this.state
-
-    axios.post('http://localhost:8081/event', {
-          title,
-          cover_url,
-          start_at,
-          end_at,
-          coordinate,
-    })
-    .then( (response) =>{
-      //console.log(response.status);
-        this.props.addEvent({
-            title,
-            cover_url,
-            start_at,
-            end_at,
-            coordinate,
-        })
-    })
+    var event = {
+      title,
+      cover_url,
+      start_at,
+      end_at,
+      coordinate
+    };
+    console.log('event:::: ');
+    console.log(event);
+    console.log(this.props);
+    this.props.addEvent(event) 
     
     this.setState({ navigate: true })
   }
+  
   showMap = () =>{
     console.log(this.state.coordinate);
 
