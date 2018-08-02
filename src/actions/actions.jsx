@@ -31,7 +31,7 @@ export function addEvent(event) {
       console.log(response);
       dispatch({
         type: ADD_EVENT,
-        event: event,
+        event: response.data,
       })
     })
   }
