@@ -15,45 +15,37 @@ var { Map, List, fromJS } = require('immutable');
 
 class EventList extends Component {
 
-   componentWillMount() {
-      this.initStore()
-   }
-   constructor(props) {
+  componentWillMount() {
+    this.initStore()
+  }
+  constructor(props) {
     super(props);
     this.state = {
 
         navigate:false,
     }
-    //this.initStore()
   }
+
   initStore =  () =>{
     this.props.setAllEvent()
   }
-   setEvent = (event) => {
-      this.props.setEvent(event)
-   }
-   deleteEvent = (id) => {
-      
-        //console.log(response.status);
-        this.props.deleteEvent(id)
-      
-   }
+  setEvent = (event) => {
+    this.props.setEvent(event)
+  }
+  deleteEvent = (id) => {
+    this.props.deleteEvent(id)   
+  }
 
-   render() {
-
+  render() {
    	const { dispatch, events } = this.props
-
-    //console.log(events);
-    //alert(events.length)***************************
-      return (
-        <ShowEventList
-          events={events}
-          setEvent={this.setEvent}
-          deleteEvent={this.deleteEvent}
-        />
-      );
-   }
-
+    return (
+      <ShowEventList
+        events={events}
+        setEvent={this.setEvent}
+        deleteEvent={this.deleteEvent}
+      />
+    );
+  }
 }
 
 function select(state) {
@@ -63,12 +55,11 @@ function select(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-   return {
-      deleteEvent: bindActionCreators(deleteEvent, dispatch),
-      setAllEvent: bindActionCreators(setAllEvent, dispatch),
-      setEvent: bindActionCreators(setEvent, dispatch),
-      
-   }
+  return {
+    deleteEvent: bindActionCreators(deleteEvent, dispatch),
+    setAllEvent: bindActionCreators(setAllEvent, dispatch),
+    setEvent: bindActionCreators(setEvent, dispatch),   
+  }
 }
 
 export default connect(select, mapDispatchToProps)(EventList);

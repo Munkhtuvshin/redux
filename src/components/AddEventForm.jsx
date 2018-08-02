@@ -170,9 +170,6 @@ handleNewImage = e => {
       end_at,
       coordinate
     };
-    console.log('event:::: ');
-    console.log(event);
-    console.log(this.props);
     this.props.addEvent(event) 
     
     this.setState({ navigate: true })

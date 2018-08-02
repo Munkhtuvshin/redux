@@ -6,51 +6,47 @@ import { Redirect  } from 'react-router-dom'
 
 class EditEvent extends React.Component {
 
-   constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
-
-        navigate:false,
+      navigate:false,
     }
   }
 
-   editEvent = (event) => {
-      this.props.dispatch(editEvent(event))
-      this.setState({ navigate: true })
+  editEvent = (event) => {
+    this.props.dispatch(editEvent(event))
+    this.setState({ navigate: true })
       //userdeg uildel //avmijlt messeage
-   }
-   render() {
+  }
+  render() {
 
-      let {
-        navigate,
-      } = this.state
+    let {
+      navigate,
+    } = this.state
 
-      if (navigate) {
-        return <Redirect to="/eventlist" push={true} />
-      }
-      const { dispatch, selected_event } = this.props
+    if (navigate) {
+      return <Redirect to="/eventlist" push={true} />
+    }
+    const { dispatch, selected_event } = this.props
       //console.log(selected_event);
-
-      return (
-
-         <div>
-            {
-               <EditEventForm 
-                 key={selected_event.id}//i is this loop's iteration
-                 {...selected_event}
-                 editEvent = {this.editEvent}
-               />
-            }
-         </div>
-
-      )
+    return (
+      <div>
+        {
+          <EditEventForm 
+            key={selected_event.id}//i is this loop's iteration
+            {...selected_event}
+            editEvent = {this.editEvent}
+          />
+        }
+      </div>
+    )
    }
 }
 
 function select(state) {
-   return {
-      selected_event: state.events.getIn(['selected_event']).toJS()
-   }
+  return {
+    selected_event: state.events.getIn(['selected_event']).toJS()
+  }
 }
 
 export default connect(select)(EditEvent);

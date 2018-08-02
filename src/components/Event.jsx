@@ -22,7 +22,6 @@ export default class Event extends React.Component {
     let {
       rowNumber
     } = this.props
-    //    console.log(this.props)
 
       return (
 
@@ -48,7 +47,7 @@ export default class Event extends React.Component {
           <Table.Cell>
           <center>
             <div className='onhovr'>
-              <Icon onClick = {() => this.props.deleteEvent(this.props.id)} className='borderRadius' bordered  name='delete' color="orange"  />
+              <Icon onClick = {() => this.props.deleteEvent(this.props._id)} className='borderRadius' bordered  name='delete' color="orange"  />
             </div>
           </center>
           </Table.Cell>
