@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import AddEventForm from './AddEventForm.jsx'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { addEvent, setAllEvent } from '../actions/actions'
 
@@ -14,12 +15,11 @@ class AddEvent extends React.Component {
       }   
      }
      this.state.h = this.state.h.bind(this);
-     this.tr =this.tr.bind(this);
+     //this.tr =this.tr.bind(this);
 
    }
-   tr(eve){
-         this.props.dispatch(addEvent(eve))
-
+   tr = (eve) => {
+      this.props.addEvent(eve)
    }
    render() {
 
@@ -50,4 +50,10 @@ function select(state) {
    }
 }
 
-export default connect(select)(AddEvent);
+function mapDispatchToProps(dispatch) {
+   return {
+      addEvent: bindActionCreators(addEvent, dispatch),
+   }
+}
+
+export default connect(select, mapDispatchToProps)(AddEvent);

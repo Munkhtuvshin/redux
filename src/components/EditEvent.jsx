@@ -28,8 +28,9 @@ class EditEvent extends React.Component {
       if (navigate) {
         return <Redirect to="/eventlist" push={true} />
       }
-
       const { dispatch, selected_event } = this.props
+      //console.log(selected_event);
+
       return (
 
          <div>

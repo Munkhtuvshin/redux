@@ -22,6 +22,7 @@ export default class Event extends React.Component {
     let {
       rowNumber
     } = this.props
+    //    console.log(this.props)
 
       return (
 
@@ -37,9 +38,11 @@ export default class Event extends React.Component {
           <Table.Cell>{this.props.coordinate.lat}, {this.props.coordinate.lng}</Table.Cell>
           <Table.Cell>
             <center>
+            <Link to="/editevent" >
             <div className='onhovr'>
-              <Icon onClick = {() => this.props.setEvent(this.props)} className='borderRadius' bordered  name='edit' color="teal"  />
+               <Icon onClick = {() => this.props.setEvent(this.props)} className='borderRadius' bordered  name='edit' color="teal"  />
             </div>
+            </Link>
             </center>
           </Table.Cell>
           <Table.Cell>

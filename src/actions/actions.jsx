@@ -11,7 +11,6 @@ export const EDIT_EVENT = 'EDIT_EVENT'
 export const SET_EVENT = 'SET_EVENT'
 export const SET_ALL_EVENT = 'SET_ALL_EVENT'
 
-
 let nextTodoId = 0;
 let eventId=2;
 export function addTodo(text) {
@@ -23,44 +22,50 @@ export function addTodo(text) {
 }
 
 export function deleteTodo(id) {
+
    return {
       type: DELETE_TODO,
       id,
    };
 }
 export function addEvent(event) {
-   
-   event.id=eventId;
-   eventId++;
-   console.log(event);
-   axios.post('http://localhost:8081/event', event)
-    .then( (response) =>{
-      return {
-        type: ADD_EVENT,
-        event,
-      };
-   })
-
-   return {
-        type: ADD_EVENT,
-        event,
-      };
+   return dispatch => {   
+      //console.log(event);
+      axios.post('http://localhost:8081/event', event)
+       .then( (response) =>{
+         //event.id=response.data.event_id
+         dispatch({
+           type: ADD_EVENT,
+           event: response.data.event,
+         })
+      })
+   }
 }
 
 export function deleteEvent(id){
-
-   return {
-      type: DELETE_EVENT,
-      id,
+  return dispatch => {
+   axios.delete('http://localhost:8081/event/'+id)
+     .then( (response) =>{
+      dispatch({
+        type: DELETE_EVENT,
+         id,
+       })
+     })
    }
 }
 
 export function editEvent(event){
 
-   return {
-      type: EDIT_EVENT,
-      event
+   return dispatch => {
+      axios.put('http://localhost:8081/event/'+event.id, event)
+       .then( (response) =>{
+         dispatch( {
+           type: EDIT_EVENT,
+           event,
+         })
+      })
    }
+
 }
 
 export function setEvent(event){
@@ -70,10 +75,15 @@ export function setEvent(event){
       event
    }
 }
-export function setAllEvent(events){
+export function setAllEvent(){
 
-   return {
-      type: SET_ALL_EVENT,
-      events
-   }
+   return dispatch => {
+      axios.get('http://localhost:8081/event')
+         .then( (events) =>{           
+            dispatch({
+              type: SET_ALL_EVENT,
+              events,
+            })
+         })
+      }
 }
