@@ -7,19 +7,18 @@ import EditEvent from './components/EditEvent.jsx'
 import ShowApi from './showApi.js'
 
 class Ap extends Component {
-   render() {
-
-      return (
-         <Router>
-            <Switch>
-               <Route  path='/eventlist' component={EventList} />
-               <Route  path='/addevent' component={AddEvent} />
-               <Route  path='/editevent' component={EditEvent} />
-               <Route  path='/showApi' component={ShowApi} />
-            </Switch>
-         </Router>
-      )
-   }
+  render() {
+    return (
+      <Router>
+        <Switch>
+          <Route  path='/eventlist' component={EventList} />
+            <Route  path='/addevent' component={AddEvent} />
+            <Route  path='/editevent' component={EditEvent} />
+            <Route  path='/showApi' component={ShowApi} />
+        </Switch>
+      </Router>
+    )
+  }
 }
 
 export default Ap;

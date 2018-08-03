@@ -14,9 +14,8 @@ let store = createStore(todoApp, middleware)
 let rootElement = document.getElementById('app')
 
 render(
-   <Provider store = {store}>
-      <Ap />
-   </Provider>,
-	
-   rootElement
+  <Provider store = {store}>
+    <Ap />
+  </Provider>,
+  rootElement
 )

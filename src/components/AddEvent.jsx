@@ -25,7 +25,6 @@ class AddEvent extends React.Component {
     }=this.state
 
     return (
-
       <div>
         {
           <AddEventForm 

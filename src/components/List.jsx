@@ -6,23 +6,20 @@ export default class List extends React.Component {
    //   return false;
    // }
 
-   componentDidUpdate(prevProps, prevState) {
-      console.log('Here is update = ' + this.props.id)  
-   }
+  componentDidUpdate(prevProps, prevState) {
+    console.log('Here is update = ' + this.props.id)  
+  }
 
-   render() {
-      return (
-         <li>
-            <label>
-            
-            {this.props.text}
-            
-            </label> 
-
-            <button >
-               delete
-            </button>
-         </li>
-      )
+  render() {
+    return (
+      <li>
+        <label>
+          {this.props.text}            
+        </label> 
+        <button >
+           delete
+        </button>
+      </li>
+    )
    }
 }

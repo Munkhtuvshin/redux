@@ -27,7 +27,7 @@ export default class AddEventForm extends React.Component {
       coordinate:{
         lat:47.78963221880257,
         lng:107.38140106201172,  
-      } ,
+      },
 
       image: 'avatar.jpg',
       allowZoomOut: false,
@@ -44,8 +44,12 @@ export default class AddEventForm extends React.Component {
 
 
   handleNewImage = e => {
-    this.setState({cover_url: this.editor.getImageScaledToCanvas().toDataURL()})
-    this.setState({ image: e.target.files[0] })
+    this.setState({
+      cover_url: this.editor.getImageScaledToCanvas().toDataURL()
+    })
+    this.setState({
+      image: e.target.files[0] 
+    })
   }
 
   handleSave = data => {
@@ -65,11 +69,15 @@ export default class AddEventForm extends React.Component {
 
   handleScale = e => {
     const scale = parseFloat(e.target.value)
-    this.setState({ scale })
+    this.setState({
+      scale 
+    })
   }
 
   handleAllowZoomOut = ({ target: { checked: allowZoomOut } }) => {
-    this.setState({ allowZoomOut })
+    this.setState({ 
+      allowZoomOut 
+    })
   }
 
   rotateLeft = e => {
@@ -88,27 +96,37 @@ export default class AddEventForm extends React.Component {
 
   handleBorderRadius = e => {
     const borderRadius = parseInt(e.target.value)
-    this.setState({ borderRadius })
+    this.setState({
+      borderRadius 
+    })
   }
 
   handleXPosition = e => {
     const x = parseFloat(e.target.value)
-    this.setState({ position: { ...this.state.position, x } })
+    this.setState({ position: { 
+      ...this.state.position, x } 
+    })
   }
 
   handleYPosition = e => {
     const y = parseFloat(e.target.value)
-    this.setState({ position: { ...this.state.position, y } })
+    this.setState({  
+      position: { ...this.state.position, y } 
+    })
   }
 
   handleWidth = e => {
     const width = parseInt(e.target.value)
-    this.setState({ width })
+    this.setState({
+      width 
+    })
   }
 
   handleHeight = e => {
     const height = parseInt(e.target.value)
-    this.setState({ height })
+    this.setState({
+      height 
+    })
   }
 
   logCallback(e) {
@@ -120,21 +138,27 @@ export default class AddEventForm extends React.Component {
   }
 
   handlePositionChange = position => {
-    this.setState({ position })
+    this.setState({  
+      position  
+    })
   }
 
   handleDrop = acceptedFiles => {
-    this.setState({ image: acceptedFiles[0] })
+    this.setState({ 
+      image: acceptedFiles[0] 
+    })
   }
 
   onTitleChanged = (event) => {
     this.setState({
-          title: event.target.value
+      title: event.target.value
     })
   }
 
   onCoverChanged = (e) => {
-    this.setState({ cover_url: e.target.files[0] })      
+    this.setState({ 
+      cover_url: e.target.files[0] 
+    })      
   }
 
   onStartAtChanged = (date) => {
@@ -165,7 +189,9 @@ export default class AddEventForm extends React.Component {
       coordinate
     };
     this.props.addEvent(event)     
-    this.setState({ navigate: true })
+    this.setState({  
+      navigate: true  
+    })
   }
   
   showMap = () =>{
@@ -177,7 +203,7 @@ export default class AddEventForm extends React.Component {
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
-  
+
   addLocation = (coordinate) => {
     this.setState({
       coordinate:{

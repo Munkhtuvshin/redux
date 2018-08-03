@@ -2,9 +2,13 @@ import { combineReducers } from 'redux'
 import { ADD_TODO, DELETE_TODO,DELETE_EVENT, CHANGE_TODO, ADD_EVENT,SET_EVENT, EDIT_EVENT, SET_ALL_EVENT } from '../actions/actions'
 var { Map, List,fromJS } = require('immutable');
 
+const eventInitial = fromJS({
+   events: [],
+   selected_event: {},
+})
+
 function events(state = eventInitial, action) {
   switch (action.type) {
-
     case ADD_EVENT: {
       let events = state.get('events')
       console.log(action.event);
@@ -39,72 +43,62 @@ function events(state = eventInitial, action) {
 
     default:
       return state
-
    }
-
 }
 
 function todo(state, action) {
-   switch (action.type) {
-      case ADD_TODO:
-         return {
-            id: action.id,
-            text: action.text,
-         }
-      default:
-         return state
-   }
+  switch (action.type) {
+    case ADD_TODO:
+      return {
+        id: action.id,
+        text: action.text,
+      }
+    default:
+      return state
+  }
 }
 function todos(state = [], action) {
-   switch (action.type) {
+  switch (action.type) {
     case ADD_TODO: {
-       //console.log(state);
-       return state.concat([{
-          id: action.id,
-          text: action.text,
-          completed: false,  
-       }])
+      return state.concat([{
+        id: action.id,
+        text: action.text,
+        completed: false,  
+      }])
     }
     case CHANGE_TODO: {
        
-       var selectedTodo = state.find((todo) => {
-          return todo.id == action.id
-       })
+      var selectedTodo = state.find((todo) => {
+        return todo.id == action.id
+      })
 
-       var index = state.findIndex((todo) => {
-          return todo.id == action.id
-       })
+      var index = state.findIndex((todo) => {
+        return todo.id == action.id
+      })
 
-       var changedTodo = Object.assign( selectedTodo, {
-         completed: !selectedTodo.completed,
-       });
+      var changedTodo = Object.assign( selectedTodo, {
+        completed: !selectedTodo.completed,
+      });
 
-       //console.log(state)
-       return state
-      }
-      case DELETE_TODO: {
+      return state
+    }
+    case DELETE_TODO: {
+      var index = state.findIndex((todo) => {
+        return todo.id == action.id
+      })
 
-         var index = state.findIndex((todo) => {
-            return todo.id == action.id
-         })
+      state.splice(index, 1);
+      return [...state];
+    }  
 
-         state.splice(index, 1);
-         return [...state];
-      }  
-
-      default:
-         return state
-   }
+    default:
+      return state
+  }
 }
 
-const eventInitial = fromJS({
-   events: [],
-   selected_event: {},
-})
-
 const todoApp = combineReducers({
-   todos,
-   events,
+  todos,
+  events,
 })
 
 export default todoApp

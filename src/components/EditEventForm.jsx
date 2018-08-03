@@ -25,7 +25,6 @@ export default class EditEventForm extends React.Component {
       location: this.props.location,
       navigate:false,
       showMap:false,
-
       image: 'avatar.jpg',
       allowZoomOut: false,
       position: { x: 0.5, y: 0.5 },
@@ -54,12 +53,16 @@ export default class EditEventForm extends React.Component {
 
   handleXPosition = e => {
     const x = parseFloat(e.target.value)
-    this.setState({ position: { ...this.state.position, x } })
+    this.setState({  
+      position: { ...this.state.position, x } 
+    })
   }
 
   handleYPosition = e => {
     const y = parseFloat(e.target.value)
-    this.setState({ position: { ...this.state.position, y } })
+    this.setState({  
+      position: { ...this.state.position, y } 
+    })
   }
 
   onLocationChanged = (event) => {
