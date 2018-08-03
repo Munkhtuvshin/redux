@@ -12,6 +12,10 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment';
 import GMap from './GMap.jsx'
+import qs from 'qs';
+const concat = require("concat-stream")
+var FormData = require('form-data');
+var targetFile =null;
 
 export default class AddEventForm extends React.Component {
 
@@ -19,7 +23,7 @@ export default class AddEventForm extends React.Component {
     super(props);
     this.state = {
       title: '',
-      cover_url: '',
+      cover_url: null,
       start_at: moment(),
       end_at: moment(),
       navigate:false,
@@ -42,14 +46,17 @@ export default class AddEventForm extends React.Component {
     }
   }
 
-
+  
   handleNewImage = e => {
+    targetFile= e.target.files[0] ;
     this.setState({
-      cover_url: this.editor.getImageScaledToCanvas().toDataURL()
+      cover_url: ''
     })
     this.setState({
       image: e.target.files[0] 
     })
+   // console.log(document.getElementById('file').files[0]);
+    //console.log(e.target.files[0]);
   }
 
   handleSave = data => {
@@ -65,6 +72,73 @@ export default class AddEventForm extends React.Component {
         borderRadius: this.state.borderRadius,
       },
     })
+  }
+
+  addevent = () => {
+    let {
+      title,
+      cover_url,
+      start_at,
+      end_at,
+      coordinate
+    } = this.state
+    var event = {
+      title,
+      cover_url,
+      start_at,
+      end_at,
+      coordinate
+    };
+    //this.props.addEvent(event);
+    // console.log('jhnkj');
+    // console.log(targetFile);
+    //  let dta = new FormData();
+
+    // dta.append('action', 'ADD');
+    // dta.append('param', 0);
+    // dta.append('secondParam', 0);
+    // dta.append('thirdParam', document.getElementById('file').files[0]);
+    //const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+    // dta.pipe(concat(data => {
+    //   axios.post("localhost:8081/upload", data, {
+    //     headers: dta.getHeaders()
+    //   })
+    // }))
+    // return axios.post('http://localhost:8081/upload', {
+    //             "UploadCommand": data
+    //           }, config);
+
+    // let request = new XMLHttpRequest();
+    // request.open('POST', 'HTTP://localhost:8081/upload');
+    // request.send(dta);
+
+    var data = new FormData();
+    //console.log(document.getElementById('file').files[0]);
+    data.append('app','dsfsd');
+    data.append('cover', targetFile);
+    //console.log(data);
+    axios({
+    method: 'post',
+    url: 'http://localhost:8081/upload',
+    data: data,
+    config: { headers: {'Content-Type': 'multipart/form-data' }}
+    })
+    .then(function (response) {
+        //handle success
+        console.log(response);
+    })
+
+    //  var config = {
+    //   onUploadProgress: function(progressEvent) {
+    //     var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+    //   }
+    // };
+    // axios.post('localhost:8081/upload', co_data, config)
+    //   .then(function (res) {
+    //     console.log('uploaded');
+    //   })
+    
   }
 
   handleScale = e => {
@@ -163,34 +237,13 @@ export default class AddEventForm extends React.Component {
 
   onStartAtChanged = (date) => {
     this.setState({
-          start_at: date
+      start_at: date
     })
   }
 
   onEndAtChanged = (date) => {
     this.setState({
-          end_at: date
-    })
-  }
-
-  addevent = () => {
-    let {
-      title,
-      cover_url,
-      start_at,
-      end_at,
-      coordinate
-    } = this.state
-    var event = {
-      title,
-      cover_url,
-      start_at,
-      end_at,
-      coordinate
-    };
-    this.props.addEvent(event)     
-    this.setState({  
-      navigate: true  
+      end_at: date
     })
   }
   
@@ -231,8 +284,7 @@ render() {
 
   return (
     <div className="addForm">
-      <Form>
-
+      <Form method="post" encType="multipart/form-data">
         <Form.Field>
           <label>Гарчиг</label>
           <input 

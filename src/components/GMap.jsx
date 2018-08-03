@@ -37,22 +37,18 @@ constructor(props) {
 	      <Modal.Content >
 	        <Modal.Description>
 	        	<div style={{ height: '100vh', width: '100%' }}>
-	          <GoogleMap
-	            bootstrapURLKeys={{ key:'AIzaSyAGitiN41FPl8mcC3zBN7yC9Av9y5CJxEc' }}
-		        center={coordinate}
-		        zoom={8}
-		        onClick={this.onMapClick}
-		      >
-
-			    <CustomMarker
-			      lat={this.state.coordinate.lat}
-				  lng={this.state.coordinate.lng}
-			      text=" "
-			    >
-			    </CustomMarker>
-		       
-		      </GoogleMap>
-		    </div>
+		          <GoogleMap
+		            bootstrapURLKeys={{ key:'AIzaSyAGitiN41FPl8mcC3zBN7yC9Av9y5CJxEc' }}
+			        	center={coordinate}
+			        	zoom={8}
+			        	onClick={this.onMapClick}>
+						    <CustomMarker
+						      lat={this.state.coordinate.lat}
+							  	lng={this.state.coordinate.lng}
+						      text=" ">
+					    </CustomMarker>
+			      	</GoogleMap>
+		    		</div>
 	        </Modal.Description>
 	      </Modal.Content>
 
