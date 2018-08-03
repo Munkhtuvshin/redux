@@ -18,20 +18,22 @@ class EventList extends Component {
   componentWillMount() {
     this.initStore()
   }
+
   constructor(props) {
     super(props);
     this.state = {
-
-        navigate:false,
+      navigate:false,
     }
   }
 
   initStore =  () =>{
     this.props.setAllEvent()
   }
+
   setEvent = (event) => {
     this.props.setEvent(event)
   }
+
   deleteEvent = (id) => {
     this.props.deleteEvent(id)   
   }
@@ -49,9 +51,9 @@ class EventList extends Component {
 }
 
 function select(state) {
-   return {
-      events: state.events.getIn(['events']).toJS()
-   }
+  return {
+    events: state.events.getIn(['events']).toJS()
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -63,5 +65,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(select, mapDispatchToProps)(EventList);
-
-

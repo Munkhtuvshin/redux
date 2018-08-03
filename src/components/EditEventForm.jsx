@@ -63,33 +63,33 @@ export default class EditEventForm extends React.Component {
   }
 
   onLocationChanged = (event) => {
-        this.setState({
-              location: event.target.value
-        })
+    this.setState({
+      location: event.target.value
+    })
   }
 
   onTitleChanged = (event) => {
-        this.setState({
-              title: event.target.value
-        })
+    this.setState({
+      title: event.target.value
+    })
   }
 
   onCoverChanged = (event) => {
-        this.setState({
-              cover_url: event.target.value
-        })
+    this.setState({
+      cover_url: event.target.value
+    })
   }
 
   onStartAtChanged = (date) => {
-        this.setState({
-              start_at: date
-        })
+    this.setState({
+      start_at: date
+    })
   }
 
   onEndAtChanged = (date) => {
-        this.setState({
-              end_at: date
-        })
+    this.setState({
+      end_at: date
+    })
   }
 
   handleScale = e => {
@@ -117,7 +117,6 @@ export default class EditEventForm extends React.Component {
   }
 
   render() {
-
     let {
       title,
       cover_url,
@@ -129,7 +128,6 @@ export default class EditEventForm extends React.Component {
         
     return (
       <div className="addForm">
-
         <Form>
           <Form.Field>
             <label>Гарчиг</label>
@@ -192,82 +190,81 @@ export default class EditEventForm extends React.Component {
             </Form.Field>
 
             <Form.Field>
-            <Segment >
-              <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={this.handleNewImage} />
-              <Button onClick={this.uploadFile} basic color='blue' content='Зураг сонгох' />
-              <br/>
-              <br/>
-              <label className='inputLabel'>Zoom: </label>
-              <br/>
-              <input
-                name="scale"
-                type="range"
-                onChange={this.handleScale}
-                min={this.state.allowZoomOut ? '0.1' : '1'}
-                max="2"
-                step="0.01"
-                defaultValue="1"
-              />
-
-              <br/>
-              <br/>
-              <label className='inputLabel' >X Position: </label><br/>
-              <input
-                name="scale"
-                type="range"
-                onChange={this.handleXPosition}
-                min="0"
-                max="1"
-                step="0.01"
-                value={this.state.position.x}
-              />
-
-              <br/>
-              <br/>
-              <label className='inputLabel'> Y Position: </label>
-              <br/>
-              <input
-                name="scale"
-                type="range"
-                onChange={this.handleYPosition}
-                min="0"
-                max="1"
-                step="0.01"
-                value={this.state.position.y}
-              />
-
-              <br/>
-              <br/>
-              
-              <Button primary onClick={this.handleSave} content="Preview" />
-              
-              {!!this.state.preview && (
-                <img
-                  className='previewImg'
-                  src={this.state.preview.img}
-                  style={{
-                    borderRadius: `${(Math.min(
-                      this.state.preview.height,
-                      this.state.preview.width
-                    ) +
-                      10) *
-                      (this.state.preview.borderRadius / 2 / 100)}px`,
-                  }}
+              <Segment >
+                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={this.handleNewImage} />
+                <Button onClick={this.uploadFile} basic color='blue' content='Зураг сонгох' />
+                <br/>
+                <br/>
+                <label className='inputLabel'>Zoom: </label>
+                <br/>
+                <input
+                  name="scale"
+                  type="range"
+                  onChange={this.handleScale}
+                  min={this.state.allowZoomOut ? '0.1' : '1'}
+                  max="2"
+                  step="0.01"
+                  defaultValue="1"
                 />
-              )}
-            </Segment>
-            </Form.Field>
-          
-          </Form.Group>
 
+                <br/>
+                <br/>
+                <label className='inputLabel' >X Position: </label><br/>
+                <input
+                  name="scale"
+                  type="range"
+                  onChange={this.handleXPosition}
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={this.state.position.x}
+                />
+
+                <br/>
+                <br/>
+                <label className='inputLabel'> Y Position: </label>
+                <br/>
+                <input
+                  name="scale"
+                  type="range"
+                  onChange={this.handleYPosition}
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={this.state.position.y}
+                />
+
+                <br/>
+                <br/>
+                
+                <Button primary onClick={this.handleSave} content="Preview" />
+                
+                {!!this.state.preview && (
+                  <img
+                    className='previewImg'
+                    src={this.state.preview.img}
+                    style={{
+                      borderRadius: `${(Math.min(
+                        this.state.preview.height,
+                        this.state.preview.width
+                      ) +
+                        10) *
+                        (this.state.preview.borderRadius / 2 / 100)}px`,
+                    }}
+                  />
+                )}
+              </Segment>
+            </Form.Field>
+          </Form.Group>
+          
           <Form.Field  className='cent'>
             <Button type='submit' primary className='center' onClick={this.editevent} content='Засах'/>
           </Form.Field>
             
         </Form>
-    
       </div>
-     )}
+    )
+  }
 
   editevent = () => {
     let {

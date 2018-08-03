@@ -57,30 +57,30 @@ function todo(state, action) {
 }
 function todos(state = [], action) {
    switch (action.type) {
-      case ADD_TODO: {
-         //console.log(state);
-         return state.concat([{
-            id: action.id,
-            text: action.text,
-            completed: false,  
-         }])
-      }
-      case CHANGE_TODO: {
-         
-         var selectedTodo = state.find((todo) => {
-            return todo.id == action.id
-         })
+    case ADD_TODO: {
+       //console.log(state);
+       return state.concat([{
+          id: action.id,
+          text: action.text,
+          completed: false,  
+       }])
+    }
+    case CHANGE_TODO: {
+       
+       var selectedTodo = state.find((todo) => {
+          return todo.id == action.id
+       })
 
-         var index = state.findIndex((todo) => {
-            return todo.id == action.id
-         })
+       var index = state.findIndex((todo) => {
+          return todo.id == action.id
+       })
 
-         var changedTodo = Object.assign( selectedTodo, {
-           completed: !selectedTodo.completed,
-         });
+       var changedTodo = Object.assign( selectedTodo, {
+         completed: !selectedTodo.completed,
+       });
 
-         //console.log(state)
-         return state
+       //console.log(state)
+       return state
       }
       case DELETE_TODO: {
 

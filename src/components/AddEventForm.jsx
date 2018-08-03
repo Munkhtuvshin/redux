@@ -15,9 +15,9 @@ import GMap from './GMap.jsx'
 
 export default class AddEventForm extends React.Component {
 
-constructor(props) {
-  super(props);
-  this.state = {
+  constructor(props) {
+    super(props);
+    this.state = {
       title: '',
       cover_url: '',
       start_at: moment(),
@@ -39,22 +39,18 @@ constructor(props) {
       width: 300,
       height: 300,
       showMap:false,
+    }
   }
-  //this.initStore()
-}
 
 
-handleNewImage = e => {
+  handleNewImage = e => {
     this.setState({cover_url: this.editor.getImageScaledToCanvas().toDataURL()})
-
     this.setState({ image: e.target.files[0] })
   }
 
   handleSave = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL()
-    //alert(img);
     const rect = this.editor.getCroppingRect()
-
     this.setState({
       preview: {
         img,
@@ -78,7 +74,6 @@ handleNewImage = e => {
 
   rotateLeft = e => {
     e.preventDefault()
-
     this.setState({
       rotate: this.state.rotate - 90,
     })
@@ -117,7 +112,6 @@ handleNewImage = e => {
   }
 
   logCallback(e) {
-    // eslint-disable-next-line
     console.log('callback', e)
   }
 
@@ -134,28 +128,28 @@ handleNewImage = e => {
   }
 
   onTitleChanged = (event) => {
-        this.setState({
-              title: event.target.value
-        })
+    this.setState({
+          title: event.target.value
+    })
   }
 
   onCoverChanged = (e) => {
-        
-      this.setState({ cover_url: e.target.files[0] })
-        
+    this.setState({ cover_url: e.target.files[0] })      
   }
+
   onStartAtChanged = (date) => {
-        this.setState({
-              start_at: date
-        })
+    this.setState({
+          start_at: date
+    })
   }
+
   onEndAtChanged = (date) => {
-        this.setState({
-              end_at: date
-        })
+    this.setState({
+          end_at: date
+    })
   }
+
   addevent = () => {
-    console.log('addevent');
     let {
       title,
       cover_url,
@@ -170,120 +164,116 @@ handleNewImage = e => {
       end_at,
       coordinate
     };
-    this.props.addEvent(event) 
-    
+    this.props.addEvent(event)     
     this.setState({ navigate: true })
   }
   
   showMap = () =>{
-    console.log(this.state.coordinate);
-
     this.setState({
       showMap:true
     });
   }
+
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
+  
   addLocation = (coordinate) => {
-
     this.setState({
       coordinate:{
         lat:coordinate.lat,
         lng:coordinate.lng
       }
     });
-    //console.log(coordinate);
   }
 
 render() {
-      var tr =false;
-      let {
-        title,
-        cover_url,
-        start_at,
-        end_at,
-        navigate,
-        coordinate,
-        showMap,
-      } = this.state
-      
-      if (navigate) {
-        return <Redirect to="/eventlist" push={true} />
-      }
-      console.log(coordinate);
+  var tr =false;
+  let {
+    title,
+    cover_url,
+    start_at,
+    end_at,
+    navigate,
+    coordinate,
+    showMap,
+  } = this.state
+  
+  if (navigate) {
+    return <Redirect to="/eventlist" push={true} />
+  }
 
-   return (
-      <div className="addForm">
+  return (
+    <div className="addForm">
+      <Form>
 
-        <Form>
+        <Form.Field>
+          <label>Гарчиг</label>
+          <input 
+          type='text'
+          value={title}
+          onChange={this.onTitleChanged}
+          placeholder='Гарчиг' />
+        </Form.Field>
+        <Divider />
+
+        <Form.Group widths='equal'>
+          <label className='self' >Эхлэх хугацаа</label>
+          <DatePicker
+            readOnly={true}
+            selected={start_at}
+            onChange={this.onStartAtChanged}
+            dateFormat="LL" />
+          <label className='marginLef'>Дуусах хугацаа</label>
+          <DatePicker 
+            readOnly= {true}
+            selected={end_at}
+            onChange={this.onEndAtChanged}
+            dateFormat="LL" />
+        </Form.Group>
+        <Divider />
+
+        <Form.Field>
+          <center>
+            <Button onClick={this.showMap} >Байршил сонгох</Button> 
+            {!!this.state.showMap && (
+               <GMap 
+                showMap={showMap}
+                coordinate={coordinate}
+                addLocation={this.addLocation}
+              />
+            )}
+
+          </center>
+        </Form.Field>
+        <Divider />
+
+        <Form.Group widths='equal'>
           <Form.Field>
-            <label>Гарчиг</label>
-            <input 
-            type='text'
-            value={title}
-            onChange={this.onTitleChanged}
-            placeholder='Гарчиг' />
-          </Form.Field>
-          <Divider />
-
-          <Form.Group widths='equal'>
-            <label className='self' >Эхлэх хугацаа</label>
-            <DatePicker
-              readOnly={true}
-              selected={start_at}
-              onChange={this.onStartAtChanged}
-              dateFormat="LL" />
-            <label className='marginLef'>Дуусах хугацаа</label>
-            <DatePicker 
-              readOnly= {true}
-              selected={end_at}
-              onChange={this.onEndAtChanged}
-              dateFormat="LL" />
-          </Form.Group>
-          <Divider />
-
-          <Form.Field>
-            <center>
-              <Button onClick={this.showMap} >Байршил сонгох</Button> 
-              {!!this.state.showMap && (
-                 <GMap 
-                  showMap={showMap}
-                  coordinate={coordinate}
-                  addLocation={this.addLocation}
+            <Dropzone
+              onDrop={this.handleDrop}
+              disableClick
+              multiple={false}
+              style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }} >
+              <div>
+                <AvatarEditor
+                  ref={this.setEditorRef}
+                  scale={parseFloat(this.state.scale)}
+                  width={this.state.width}
+                  height={this.state.height}
+                  position={this.state.position}
+                  onPositionChange={this.handlePositionChange}
+                  rotate={parseFloat(this.state.rotate)}
+                  borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                  onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+                  onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+                  onImageReady={this.logCallback.bind(this, 'onImageReady')}
+                  image={this.state.image}
+                  className="editor-canvas"
                 />
-              )}
-
-            </center>
+              </div>
+            </Dropzone>
           </Form.Field>
-          <Divider />
-
-          <Form.Group widths='equal'>
-            <Form.Field>
-              <Dropzone
-                onDrop={this.handleDrop}
-                disableClick
-                multiple={false}
-                style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }} >
-                <div>
-                  <AvatarEditor
-                    ref={this.setEditorRef}
-                    scale={parseFloat(this.state.scale)}
-                    width={this.state.width}
-                    height={this.state.height}
-                    position={this.state.position}
-                    onPositionChange={this.handlePositionChange}
-                    rotate={parseFloat(this.state.rotate)}
-                    borderRadius={this.state.width / (100 / this.state.borderRadius)}
-                    onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-                    onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-                    onImageReady={this.logCallback.bind(this, 'onImageReady')}
-                    image={this.state.image}
-                    className="editor-canvas"
-                  />
-                </div>
-              </Dropzone>
-            </Form.Field>
 
             <Form.Field>
             <Segment >
@@ -351,18 +341,14 @@ render() {
                 />
               )}
             </Segment>
-            </Form.Field>
-          
+          </Form.Field>
 
           </Form.Group>
-
             <Form.Field  className='cent'>
               <Button type='submit' primary className='center' onClick={this.addevent} content='Нэмэх'/>
-            </Form.Field>
-            
-        </Form>
+          </Form.Field>
 
-        
+        </Form>
       </div>
       )
    }

@@ -11,24 +11,18 @@ import { Button, Table } from 'semantic-ui-react'
 
 export default class ShowEventList extends Component {
 
-  
-
    constructor(props) {
     super(props);
     this.state = {
-
-        navigate:false,
+      navigate:false,
     }
-    //this.initStore()
   }
 
    render() {
+   	let { 
+      events
+    } = this.props
 
-      
-
-   	let { events } = this.props
-    //console.log(events);
-    //alert(events.length)***************************
       return (
         <div className='tableMargin'>
           <Link to="/addevent" >    <Button primary className='addButton'>Add</Button> </Link>
@@ -56,8 +50,9 @@ export default class ShowEventList extends Component {
                     {...event}
                     deleteEvent = {this.props.deleteEvent}
                     setEvent={this.props.setEvent}  />
-                  ))
-                }
+                  )
+                )
+              }
             </Table.Body>
           </Table>
         </div>

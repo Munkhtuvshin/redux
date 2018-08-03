@@ -14,13 +14,11 @@ export default class Todo extends React.Component {
       return (
          <li>
             <label onClick={() => this.props.changeTodo(this.props.id)}  
-            style={{
-      textDecoration: this.props.completed ? 'line-through' : 'none'
-    }}
-    >
-            
+              style={{
+               textDecoration: this.props.completed ? 'line-through' : 'none'
+              }}
+            >
             {this.props.text}
-            
             </label> 
 
             <button onClick = {() => this.props.deleteTodo(this.props.id)}>

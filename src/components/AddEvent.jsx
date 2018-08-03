@@ -6,54 +6,48 @@ import { addEvent, setAllEvent } from '../actions/actions'
 
 class AddEvent extends React.Component {
 
-   constructor(props) {
-     super(props);
-     this.state= {
-      h : function(eve){
-
-         this.props.dispatch(addEvent(eve))
+  constructor(props) {
+    super(props);
+      this.state= {
+        h : function(eve){
+        this.props.dispatch(addEvent(eve))
       }   
-     }
-     this.state.h = this.state.h.bind(this);
-     //this.tr =this.tr.bind(this);
+    }
+    this.state.h = this.state.h.bind(this);
+  }
+  tr = (eve) => {
+    this.props.addEvent(eve)
+  }
+  render() {
+    const { dispatch, events } = this.props
+    let{
+      h
+    }=this.state
 
-   }
-   tr = (eve) => {
-      this.props.addEvent(eve)
-   }
-   render() {
+    return (
 
-      const { dispatch, events } = this.props
-
-      let{
-         h
-      }=this.state
-
-      return (
-
-         <div>
-            {
-               <AddEventForm 
-                  addEvent = {this.tr}
-                  setAllEvent = {(events) => dispatch(setAllEvent(events)) }
-               />
-            }
-         </div>
-
-      )
+      <div>
+        {
+          <AddEventForm 
+            addEvent = {this.tr}
+            setAllEvent = {(events) => dispatch(setAllEvent(events)) }
+          />
+        }
+      </div>
+    )
    }
 }
 
 function select(state) {
-   return {
-      events: state.events
-   }
+  return {
+    events: state.events
+  }
 }
 
 function mapDispatchToProps(dispatch) {
-   return {
-      addEvent: bindActionCreators(addEvent, dispatch),
-   }
+  return {
+    addEvent: bindActionCreators(addEvent, dispatch),
+  }
 }
 
 export default connect(select, mapDispatchToProps)(AddEvent);
