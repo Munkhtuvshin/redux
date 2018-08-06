@@ -1,9 +1,14 @@
 import { combineReducers } from 'redux'
-import { ADD_TODO, DELETE_TODO,DELETE_EVENT, CHANGE_TODO, ADD_EVENT,SET_EVENT, EDIT_EVENT, SET_ALL_EVENT } from '../actions/actions'
+import { ADD_TODO, DELETE_TODO,DELETE_EVENT, CHANGE_TODO, ADD_EVENT,SET_EVENT, EDIT_EVENT, SET_ALL_EVENT, 
+          CHANGE_TITLE 
+        } from '../actions/actions'
+import moment from 'moment';
+
 var { Map, List,fromJS } = require('immutable');
 
 const eventInitial = fromJS({
    events: [],
+   add_event:{ title: 'hellos', start_at: 'jkl' },
    selected_event: {},
 })
 
@@ -39,6 +44,16 @@ function events(state = eventInitial, action) {
 
     case SET_ALL_EVENT: {
       return state.set('events', fromJS(action.events.data));
+    }
+
+    case CHANGE_TITLE: {
+      let tmp = state.getIn(['add_event']).toJS();
+      console.log(action)
+      console.log(tmp);
+      tmp.title =action.value;
+      console.log(tmp);
+      console.log(state.set('add_event', fromJS(tmp)));
+      return state.set('add_event', fromJS(tmp));
     }
 
     default:

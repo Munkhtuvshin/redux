@@ -25,7 +25,7 @@ export default class EditEventForm extends React.Component {
       location: this.props.location,
       navigate:false,
       showMap:false,
-      image: 'avatar.jpg',
+      image: 'img.jpg',
       allowZoomOut: false,
       position: { x: 0.5, y: 0.5 },
       scale: 1,

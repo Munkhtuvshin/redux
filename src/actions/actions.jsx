@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 export const ADD_TODO = 'ADD_TODO'
 export const DELETE_TODO = 'DELETE_TODO'
 export const CHANGE_TODO = 'CHANGE_TODO'
@@ -7,6 +8,8 @@ export const DELETE_EVENT = 'DELETE_EVENT'
 export const EDIT_EVENT = 'EDIT_EVENT'
 export const SET_EVENT = 'SET_EVENT'
 export const SET_ALL_EVENT = 'SET_ALL_EVENT'
+export const CHANGE_TITLE = 'CHANGE_TITLE'
+
 
 let nextTodoId = 0;
 
@@ -37,7 +40,7 @@ export function addEvent(event) {
   }
 }
 
-export function deleteEvent(id){
+export function deleteEvent(id) {
   return dispatch => {
     axios.delete('http://localhost:8081/event/'+id)
     .then( (response) =>{
@@ -49,7 +52,7 @@ export function deleteEvent(id){
   }
 }
 
-export function editEvent(event){
+export function editEvent(event) {
    console.log(event);
   return dispatch => {
     axios.put('http://localhost:8081/event/'+event._id, event)
@@ -62,14 +65,14 @@ export function editEvent(event){
   }
 }
 
-export function setEvent(event){
+export function setEvent(event) {
   return {
     type: SET_EVENT,
     event
   }
 }
 
-export function setAllEvent(){
+export function setAllEvent() {
   return dispatch => {
     axios.get('http://localhost:8081/event')
     .then( (events) =>{           
@@ -79,4 +82,11 @@ export function setAllEvent(){
       })
     })
    }
+}
+
+export function onTitleChanged(value) {
+  return {
+    type: CHANGE_TITLE,
+    value
+  }
 }

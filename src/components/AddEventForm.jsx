@@ -22,7 +22,7 @@ export default class AddEventForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
+      title: this.props.title,
       cover_url: null,
       start_at: moment(),
       end_at: moment(),
@@ -55,8 +55,6 @@ export default class AddEventForm extends React.Component {
     this.setState({
       image: e.target.files[0] 
     })
-   // console.log(document.getElementById('file').files[0]);
-    //console.log(e.target.files[0]);
   }
 
   handleSave = data => {
@@ -89,34 +87,15 @@ export default class AddEventForm extends React.Component {
       end_at,
       coordinate
     };
-    //this.props.addEvent(event);
-    // console.log('jhnkj');
-    // console.log(targetFile);
-    //  let dta = new FormData();
-
-    // dta.append('action', 'ADD');
-    // dta.append('param', 0);
-    // dta.append('secondParam', 0);
-    // dta.append('thirdParam', document.getElementById('file').files[0]);
-    //const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-
-    // dta.pipe(concat(data => {
-    //   axios.post("localhost:8081/upload", data, {
-    //     headers: dta.getHeaders()
-    //   })
-    // }))
-    // return axios.post('http://localhost:8081/upload', {
-    //             "UploadCommand": data
-    //           }, config);
-
-    // let request = new XMLHttpRequest();
-    // request.open('POST', 'HTTP://localhost:8081/upload');
-    // request.send(dta);
 
     var data = new FormData();
     //console.log(document.getElementById('file').files[0]);
-    data.append('app','dsfsd');
-    data.append('cover', targetFile);
+    data.append('cover_url', targetFile);
+    data.append('title', title);
+    data.append('start_at', start_at);
+    data.append('end_at', end_at);
+    data.append('lat', coordinate.lat);
+    data.append('lng', coordinate.lng);
     //console.log(data);
     axios({
     method: 'post',
@@ -128,17 +107,6 @@ export default class AddEventForm extends React.Component {
         //handle success
         console.log(response);
     })
-
-    //  var config = {
-    //   onUploadProgress: function(progressEvent) {
-    //     var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-    //   }
-    // };
-    // axios.post('localhost:8081/upload', co_data, config)
-    //   .then(function (res) {
-    //     console.log('uploaded');
-    //   })
-    
   }
 
   handleScale = e => {
@@ -224,9 +192,7 @@ export default class AddEventForm extends React.Component {
   }
 
   onTitleChanged = (event) => {
-    this.setState({
-      title: event.target.value
-    })
+    this.props.onTitleChanged(event.target.value);
   }
 
   onCoverChanged = (e) => {
@@ -267,6 +233,8 @@ export default class AddEventForm extends React.Component {
   }
 
 render() {
+  // console.log('add event form');
+  // console.log(this.props);
   var tr =false;
   let {
     title,
@@ -289,10 +257,11 @@ render() {
           <label>Гарчиг</label>
           <input 
           type='text'
-          value={title}
-          onChange={this.onTitleChanged}
+          value={this.props.title}
+          onChange={ this.onTitleChanged }
           placeholder='Гарчиг' />
         </Form.Field>
+
         <Divider />
 
         <Form.Group widths='equal'>
