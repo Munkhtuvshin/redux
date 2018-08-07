@@ -8,45 +8,28 @@ const CustomMarker = ({ text, }) => (<div className='klass' >{text}</div>)
 
 export default class GMap extends React.Component {
   
-constructor(props) {
-  super(props);
-  this.state = {
-    coordinate:this.props.coordinate,
-    showMap: this.props.showMap,
-  }
-}
-
-  onMapClick = (event) => {
-  	this.setState({
-      coordinate: {
-        lat: event.lat,
-        lng: event.lng
-      },
-  	})
-  }
+	constructor(props) {
+	  super(props);
+	}
 
   render(){
-  	let {
-      coordinate,
-      showMap,
-    } = this.state
 
     return (
-		  <Modal open={showMap}>
+		  <Modal open={this.props.showmap}>
 	      <Modal.Header>Байршил сонгох</Modal.Header>
 	      <Modal.Content >
 	        <Modal.Description>
 	        	<div style={{ height: '100vh', width: '100%' }}>
 		          <GoogleMap
 		            bootstrapURLKeys={{ key:'AIzaSyAGitiN41FPl8mcC3zBN7yC9Av9y5CJxEc' }}
-			        	center={coordinate}
+			        	center={this.props.coordinate}
 			        	zoom={8}
-			        	onClick={this.onMapClick}>
+			        	onClick={(value) => this.props.onLocationChanged(value)}>
 						    <CustomMarker
-						      lat={this.state.coordinate.lat}
-							  	lng={this.state.coordinate.lng}
+						      lat={this.props.coordinate.lat}
+							  	lng={this.props.coordinate.lng}
 						      text=" ">
-					    </CustomMarker>
+					      </CustomMarker>
 			      	</GoogleMap>
 		    		</div>
 	        </Modal.Description>
@@ -62,8 +45,7 @@ constructor(props) {
   }
 
   addLocation = (coordinate) =>{
-    this.setState({showMap:false});
-		this.props.addLocation(this.state.coordinate)
+    this.props.showMap()
   }
 
 }

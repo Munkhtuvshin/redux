@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { ADD_TODO, DELETE_TODO,DELETE_EVENT, CHANGE_TODO, ADD_EVENT,SET_EVENT, EDIT_EVENT, SET_ALL_EVENT, 
-          CHANGE_TITLE 
+          CHANGE_TITLE, CHANGE_START_AT, CHANGE_END_AT, CHANGE_COVER_URL, CHANGE_LOCATION, SHOWMAP, 
+          EDIT_CHANGE_TITLE, EDIT_CHANGE_START_AT, EDIT_CHANGE_END_AT, EDIT_CHANGE_COVER_URL, EDIT_CHANGE_LOCATION, EDIT_SHOWMAP
         } from '../actions/actions'
 import moment from 'moment';
 
@@ -8,18 +9,19 @@ var { Map, List,fromJS } = require('immutable');
 
 const eventInitial = fromJS({
    events: [],
-   add_event:{ title: 'hellos', start_at: 'jkl' },
+   add_event:{ title: 'hellos', start_at: moment(), end_at: moment(), cover_url: '', coordinate:{
+        lat:47.78963221880257,
+        lng:107.38140106201172,  
+      }, showmap:false }, 
    selected_event: {},
 })
 
 function events(state = eventInitial, action) {
   switch (action.type) {
     case ADD_EVENT: {
-      let events = state.get('events')
-      console.log(action.event);
-      events = events.push(fromJS(action.event))
-         //console.log(events);
-      return state.set('events', events)
+      let events = state.get('events');
+      events = events.push(action.event)
+      return state.set('events', fromJS(events))
     } 
 
     case EDIT_EVENT: {
@@ -31,7 +33,9 @@ function events(state = eventInitial, action) {
     }
 
     case SET_EVENT: {
-      return state.set('selected_event',fromJS(action.event))
+      let tmp = {showmap:false}
+      let tmp1 = Object.assign(tmp, action.event);
+      return state.set('selected_event',fromJS(tmp1))
     }
 
     case DELETE_EVENT: {
@@ -48,12 +52,76 @@ function events(state = eventInitial, action) {
 
     case CHANGE_TITLE: {
       let tmp = state.getIn(['add_event']).toJS();
-      console.log(action)
-      console.log(tmp);
       tmp.title =action.value;
-      console.log(tmp);
-      console.log(state.set('add_event', fromJS(tmp)));
       return state.set('add_event', fromJS(tmp));
+    }
+
+    case CHANGE_START_AT: {
+      let tmp = state.getIn(['add_event']).toJS();
+      tmp.start_at = action.value;
+      return state.set('add_event', fromJS(tmp));
+    }
+
+    case CHANGE_END_AT: {
+      let tmp = state.getIn(['add_event']).toJS();
+      tmp.end_at = action.value;
+      return state.set('add_event', fromJS(tmp));
+    }
+
+    case CHANGE_COVER_URL: {
+      let tmp = state.getIn(['add_event']).toJS();
+      tmp.cover_url = action.value;
+      return state.set('add_event', fromJS(tmp));
+    }
+
+    case CHANGE_LOCATION: {
+      let tmp = state.getIn(['add_event']).toJS();
+      tmp.coordinate.lat = action.value.lat;
+      tmp.coordinate.lng = action.value.lng;
+      return state.set('add_event', fromJS(tmp));
+    }
+
+    case SHOWMAP: {
+      let tmp = state.getIn(['add_event']).toJS();
+      tmp.showmap = !tmp.showmap;
+      return state.set('add_event', fromJS(tmp));
+    }
+    //---------Edit actions----------------
+    case EDIT_CHANGE_TITLE: {
+      let tmp = state.getIn(['selected_event']).toJS();
+      tmp.title =action.value;
+      return state.set('selected_event', fromJS(tmp));
+    }
+
+    case EDIT_CHANGE_START_AT: {
+      let tmp = state.getIn(['selected_event']).toJS();
+      tmp.start_at = action.value;
+      return state.set('selected_event', fromJS(tmp));
+    }
+
+    case EDIT_CHANGE_END_AT: {
+      let tmp = state.getIn(['selected_event']).toJS();
+      tmp.end_at = action.value;
+      return state.set('selected_event', fromJS(tmp));
+    }
+
+    case EDIT_CHANGE_COVER_URL: {
+      let tmp = state.getIn(['selected_event']).toJS();
+      tmp.cover_url = action.value;
+      return state.set('selected_event', fromJS(tmp));
+    }
+
+    case EDIT_CHANGE_LOCATION: {
+      let tmp = state.getIn(['selected_event']).toJS();
+      tmp.coordinate.lat = action.value.lat;
+      tmp.coordinate.lng = action.value.lng;
+      return state.set('selected_event', fromJS(tmp));
+    }
+
+    case EDIT_SHOWMAP: {
+      let tmp = state.getIn(['selected_event']).toJS();
+      tmp.showmap = !tmp.showmap;
+      return state.set('selected_event', fromJS(tmp));
     }
 
     default:

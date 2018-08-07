@@ -1,39 +1,43 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import { BrowserRouter, Link } from 'react-router-dom';
 import { Redirect  } from 'react-router-dom'
 import Dropzone from 'react-dropzone'
 import Preview from './Preview.jsx'
 import AvatarEditor from 'react-avatar-editor'
-import { Button, Checkbox, Form, Divider, Segment } from 'semantic-ui-react'
-import './editEventForm.css'
+import { Button, Checkbox, Form, Divider, Segment, Modal, Header, Icon, Image } from 'semantic-ui-react'
+import './addEventForm.css'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment';
 import GMap from './GMap.jsx'
+import qs from 'qs';
+const concat = require("concat-stream")
+var FormData = require('form-data');
+var targetFile =null;
 
 export default class EditEventForm extends React.Component {
 
+  componentWillUpdate(){
+
+  }
   constructor(props) {
     super(props);
     this.state = {
-      _id: this.props._id,
-      title: this.props.title,
-      coordinate: this.props.coordinate,
-      start_at: moment(this.props.start_at),
-      end_at: moment(this.props.end_at),
-      location: this.props.location,
+
       navigate:false,
-      showMap:false,
-      image: 'img.jpg',
+
       allowZoomOut: false,
       position: { x: 0.5, y: 0.5 },
       scale: 1,
+      rotate: 0,
       borderRadius: 0,
       preview: null,
       width: 300,
       height: 300,
-      }
+      showMap:false,
+    }
   }
 
   handleSave = data => {
@@ -51,10 +55,51 @@ export default class EditEventForm extends React.Component {
     })
   }
 
+  editevent = () => {
+    let { title,  cover_url, start_at, end_at, coordinate } = this.props
+    let event = { title, cover_url, start_at, end_at, coordinate };
+    console.log(event);
+    this.props.editEvent(event);
+  }
+
+  handleScale = e => {
+    const scale = parseFloat(e.target.value)
+    this.setState({
+      scale 
+    })
+  }
+
+  handleAllowZoomOut = ({ target: { checked: allowZoomOut } }) => {
+    this.setState({ 
+      allowZoomOut 
+    })
+  }
+
+  rotateLeft = e => {
+    e.preventDefault()
+    this.setState({
+      rotate: this.state.rotate - 90,
+    })
+  }
+
+  rotateRight = e => {
+    e.preventDefault()
+    this.setState({
+      rotate: this.state.rotate + 90,
+    })
+  }
+
+  handleBorderRadius = e => {
+    const borderRadius = parseInt(e.target.value)
+    this.setState({
+      borderRadius 
+    })
+  }
+
   handleXPosition = e => {
     const x = parseFloat(e.target.value)
-    this.setState({  
-      position: { ...this.state.position, x } 
+    this.setState({ position: { 
+      ...this.state.position, x } 
     })
   }
 
@@ -65,107 +110,100 @@ export default class EditEventForm extends React.Component {
     })
   }
 
-  onLocationChanged = (event) => {
+  handleWidth = e => {
+    const width = parseInt(e.target.value)
     this.setState({
-      location: event.target.value
+      width 
     })
   }
 
-  onTitleChanged = (event) => {
+  handleHeight = e => {
+    const height = parseInt(e.target.value)
     this.setState({
-      title: event.target.value
+      height 
     })
   }
 
-  onCoverChanged = (event) => {
-    this.setState({
-      cover_url: event.target.value
+  logCallback(e) {
+    console.log('callback', e)
+  }
+
+  setEditorRef = editor => {
+    if (editor) this.editor = editor
+  }
+
+  handlePositionChange = position => {
+    this.setState({  
+      position  
     })
   }
 
-  onStartAtChanged = (date) => {
-    this.setState({
-      start_at: date
+  handleDrop = acceptedFiles => {
+    this.setState({ 
+      image: acceptedFiles[0] 
     })
   }
 
-  onEndAtChanged = (date) => {
-    this.setState({
-      end_at: date
-    })
-  }
-
-  handleScale = e => {
-    const scale = parseFloat(e.target.value)
-    this.setState({ scale })
+  onChanged (event) {
+    switch(event.target.id) {
+      case "tit": {
+        this.props.editonChanged(1, event.target.value)
+      }
+    }
   }
 
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
 
-  showMap = () =>{
-    this.setState({
-      showMap:true
-    });
-  }
-
-  addLocation = (coordinate) => {
-    this.setState({
-      coordinate:{
-        lat:coordinate.lat,
-        lng:coordinate.lng
-      }
-    });
-  }
-
   render() {
-    let {
-      title,
-      cover_url,
-      start_at,
-      end_at,
-      coordinate,
-      showMap
-    } = this.state
-        
+    console.log(this.props);
     return (
       <div className="addForm">
-        <Form>
+        <Form method="post" encType="multipart/form-data">
           <Form.Field>
             <label>Гарчиг</label>
             <input 
+            ref = "title1"
+            id = "tit"
             type='text'
-            value={title}
-            onChange={this.onTitleChanged}
+            value={this.props.title}
+            onChange={ ( event ) => this.onChanged( event ) }
             placeholder='Гарчиг' />
           </Form.Field>
+
           <Divider />
 
           <Form.Group widths='equal'>
-            <label className='self' >Эхлэх хугацаа</label>
-            <DatePicker 
-              selected={start_at}
-              onChange={this.onStartAtChanged}
+            <label className='self' htmlFor="start_at" >Эхлэх хугацаа</label>
+            <DatePicker
+              readOnly={true}
+              id = "start_at"
+              selected={moment(this.props.start_at)}
+              onChange={ (date) => this.props.editonStartAtChanged(date) }
               dateFormat="LL" />
             <label className='marginLef'>Дуусах хугацаа</label>
             <DatePicker 
-              selected={end_at}
-              onChange={this.onEndAtChanged}
+              readOnly= {true}
+              id = "end_at"
+              selected={moment(this.props.end_at)}
+              onChange={ (date) => this.props.editonEndAtChanged(date) }
               dateFormat="LL" />
           </Form.Group>
           <Divider />
 
           <Form.Field>
             <center>
-              <Button onClick={this.showMap} >Байршил өөрчлөх</Button> 
-              {!!this.state.showMap && (
+              <Button onClick={this.props.editshowMap} >Байршил сонгох</Button> 
+              {!!this.props.showmap && (
                  <GMap 
-                  showMap={showMap}
-                  coordinate={coordinate}
-                  addLocation={this.addLocation}
+                  showmap={this.props.showmap}
+                  showMap={this.props.editshowMap}
+                  coordinate={this.props.coordinate}
+                  onLocationChanged = {this.props.editonLocationChanged}
                 />
               )}
+
             </center>
           </Form.Field>
           <Divider />
@@ -185,16 +223,21 @@ export default class EditEventForm extends React.Component {
                     height={this.state.height}
                     position={this.state.position}
                     onPositionChange={this.handlePositionChange}
-                    image={this.state.image}
+                    rotate={parseFloat(this.state.rotate)}
+                    borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                    onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+                    onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+                    onImageReady={this.logCallback.bind(this, 'onImageReady')}
+                    image={this.props.cover_url}
                     className="editor-canvas"
                   />
                 </div>
               </Dropzone>
             </Form.Field>
 
-            <Form.Field>
+              <Form.Field>
               <Segment >
-                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={this.handleNewImage} />
+                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={(event) => this.props.editonCoverChanged(event.target.files[0]) } />
                 <Button onClick={this.uploadFile} basic color='blue' content='Зураг сонгох' />
                 <br/>
                 <br/>
@@ -227,6 +270,7 @@ export default class EditEventForm extends React.Component {
                 <br/>
                 <label className='inputLabel'> Y Position: </label>
                 <br/>
+
                 <input
                   name="scale"
                   type="range"
@@ -258,33 +302,15 @@ export default class EditEventForm extends React.Component {
                 )}
               </Segment>
             </Form.Field>
+
           </Form.Group>
-          
-          <Form.Field  className='cent'>
-            <Button type='submit' primary className='center' onClick={this.editevent} content='Засах'/>
+            <Form.Field  className='cent'>
+             <Button type='submit' primary className='center' onClick={this.editevent} content='Засах'/>
           </Form.Field>
-            
+
         </Form>
       </div>
     )
   }
-
-  editevent = () => {
-    let {
-      _id,
-      title,
-      coordinate,
-      start_at,
-      end_at,
-      location
-    } = this.state
-    this.props.editEvent({
-      _id,
-      title,
-      coordinate,
-      start_at,
-      end_at,
-      location
-    })
-  }
 }
+

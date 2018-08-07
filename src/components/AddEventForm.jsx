@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import { BrowserRouter, NavLink } from 'react-router-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import { Redirect  } from 'react-router-dom'
 import Dropzone from 'react-dropzone'
 import Preview from './Preview.jsx'
@@ -19,21 +19,15 @@ var targetFile =null;
 
 export default class AddEventForm extends React.Component {
 
+  componentWillUpdate(){
+
+  }
   constructor(props) {
     super(props);
     this.state = {
-      title: this.props.title,
-      cover_url: null,
-      start_at: moment(),
-      end_at: moment(),
+
       navigate:false,
 
-      coordinate:{
-        lat:47.78963221880257,
-        lng:107.38140106201172,  
-      },
-
-      image: 'avatar.jpg',
       allowZoomOut: false,
       position: { x: 0.5, y: 0.5 },
       scale: 1,
@@ -44,17 +38,6 @@ export default class AddEventForm extends React.Component {
       height: 300,
       showMap:false,
     }
-  }
-
-  
-  handleNewImage = e => {
-    targetFile= e.target.files[0] ;
-    this.setState({
-      cover_url: ''
-    })
-    this.setState({
-      image: e.target.files[0] 
-    })
   }
 
   handleSave = data => {
@@ -73,40 +56,10 @@ export default class AddEventForm extends React.Component {
   }
 
   addevent = () => {
-    let {
-      title,
-      cover_url,
-      start_at,
-      end_at,
-      coordinate
-    } = this.state
-    var event = {
-      title,
-      cover_url,
-      start_at,
-      end_at,
-      coordinate
-    };
-
-    var data = new FormData();
-    //console.log(document.getElementById('file').files[0]);
-    data.append('cover_url', targetFile);
-    data.append('title', title);
-    data.append('start_at', start_at);
-    data.append('end_at', end_at);
-    data.append('lat', coordinate.lat);
-    data.append('lng', coordinate.lng);
-    //console.log(data);
-    axios({
-    method: 'post',
-    url: 'http://localhost:8081/upload',
-    data: data,
-    config: { headers: {'Content-Type': 'multipart/form-data' }}
-    })
-    .then(function (response) {
-        //handle success
-        console.log(response);
-    })
+    //console.log(this.props);
+    let { title,  cover_url, start_at, end_at, coordinate } = this.props
+    let event = { title, cover_url, start_at, end_at, coordinate };
+    this.props.addEvent(event);
   }
 
   handleScale = e => {
@@ -191,31 +144,17 @@ export default class AddEventForm extends React.Component {
     })
   }
 
-  onTitleChanged = (event) => {
-    this.props.onTitleChanged(event.target.value);
-  }
-
-  onCoverChanged = (e) => {
-    this.setState({ 
-      cover_url: e.target.files[0] 
-    })      
-  }
-
-  onStartAtChanged = (date) => {
-    this.setState({
-      start_at: date
-    })
-  }
-
-  onEndAtChanged = (date) => {
-    this.setState({
-      end_at: date
-    })
+  onChanged (event) {
+    switch(event.target.id) {
+      case "tit": {
+        this.props.onChanged(1, event.target.value)
+      }
+    }
   }
   
   showMap = () =>{
     this.setState({
-      showMap:true
+      show:!this.state.show
     });
   }
 
@@ -223,184 +162,178 @@ export default class AddEventForm extends React.Component {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
 
-  addLocation = (coordinate) => {
-    this.setState({
-      coordinate:{
-        lat:coordinate.lat,
-        lng:coordinate.lng
-      }
-    });
-  }
+  render() {
+    // console.log('add event form');
+    //console.log(this.props);
+    var tr =false;
+    let {
+      title,
+      cover_url,
+      start_at,
+      end_at,
+      navigate,
+      coordinate,
+      showMap,
+    } = this.state
+    
+    if (navigate) {
+      return <Redirect to="/eventlist" push={true} />
+    }
 
-render() {
-  // console.log('add event form');
-  // console.log(this.props);
-  var tr =false;
-  let {
-    title,
-    cover_url,
-    start_at,
-    end_at,
-    navigate,
-    coordinate,
-    showMap,
-  } = this.state
-  
-  if (navigate) {
-    return <Redirect to="/eventlist" push={true} />
-  }
-
-  return (
-    <div className="addForm">
-      <Form method="post" encType="multipart/form-data">
-        <Form.Field>
-          <label>Гарчиг</label>
-          <input 
-          type='text'
-          value={this.props.title}
-          onChange={ this.onTitleChanged }
-          placeholder='Гарчиг' />
-        </Form.Field>
-
-        <Divider />
-
-        <Form.Group widths='equal'>
-          <label className='self' >Эхлэх хугацаа</label>
-          <DatePicker
-            readOnly={true}
-            selected={start_at}
-            onChange={this.onStartAtChanged}
-            dateFormat="LL" />
-          <label className='marginLef'>Дуусах хугацаа</label>
-          <DatePicker 
-            readOnly= {true}
-            selected={end_at}
-            onChange={this.onEndAtChanged}
-            dateFormat="LL" />
-        </Form.Group>
-        <Divider />
-
-        <Form.Field>
-          <center>
-            <Button onClick={this.showMap} >Байршил сонгох</Button> 
-            {!!this.state.showMap && (
-               <GMap 
-                showMap={showMap}
-                coordinate={coordinate}
-                addLocation={this.addLocation}
-              />
-            )}
-
-          </center>
-        </Form.Field>
-        <Divider />
-
-        <Form.Group widths='equal'>
+    return (
+      <div className="addForm">
+        <Form method="post" encType="multipart/form-data">
           <Form.Field>
-            <Dropzone
-              onDrop={this.handleDrop}
-              disableClick
-              multiple={false}
-              style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }} >
-              <div>
-                <AvatarEditor
-                  ref={this.setEditorRef}
-                  scale={parseFloat(this.state.scale)}
-                  width={this.state.width}
-                  height={this.state.height}
-                  position={this.state.position}
-                  onPositionChange={this.handlePositionChange}
-                  rotate={parseFloat(this.state.rotate)}
-                  borderRadius={this.state.width / (100 / this.state.borderRadius)}
-                  onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-                  onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-                  onImageReady={this.logCallback.bind(this, 'onImageReady')}
-                  image={this.state.image}
-                  className="editor-canvas"
-                />
-              </div>
-            </Dropzone>
+            <label>Гарчиг</label>
+            <input 
+            ref = "title1"
+            id = "tit"
+            type='text'
+            value={this.props.title}
+            onChange={ ( event ) => this.onChanged( event ) }
+            placeholder='Гарчиг' />
           </Form.Field>
 
-            <Form.Field>
-            <Segment >
-              <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={this.handleNewImage} />
-              <Button onClick={this.uploadFile} basic color='blue' content='Зураг сонгох' />
-              <br/>
-              <br/>
-              <label className='inputLabel'>Zoom: </label>
-              <br/>
-              <input
-                name="scale"
-                type="range"
-                onChange={this.handleScale}
-                min={this.state.allowZoomOut ? '0.1' : '1'}
-                max="2"
-                step="0.01"
-                defaultValue="1"
-              />
+          <Divider />
 
-              <br/>
-              <br/>
-              <label className='inputLabel' >X Position: </label><br/>
-              <input
-                name="scale"
-                type="range"
-                onChange={this.handleXPosition}
-                min="0"
-                max="1"
-                step="0.01"
-                value={this.state.position.x}
-              />
+          <Form.Group widths='equal'>
+            <label className='self' htmlFor="start_at" >Эхлэх хугацаа</label>
+            <DatePicker
+              readOnly={true}
+              id = "start_at"
+              selected={this.props.start_at}
+              onChange={ (date) => this.props.onStartAtChanged(date) }
+              dateFormat="LL" />
+            <label className='marginLef'>Дуусах хугацаа</label>
+            <DatePicker 
+              readOnly= {true}
+              id = "end_at"
+              selected={this.props.end_at}
+              onChange={ (date) => this.props.onEndAtChanged(date) }
+              dateFormat="LL" />
+          </Form.Group>
+          <Divider />
 
-              <br/>
-              <br/>
-              <label className='inputLabel'> Y Position: </label>
-              <br/>
-
-              <input
-                name="scale"
-                type="range"
-                onChange={this.handleYPosition}
-                min="0"
-                max="1"
-                step="0.01"
-                value={this.state.position.y}
-              />
-
-              <br/>
-              <br/>
-              
-              <Button primary onClick={this.handleSave} content="Preview" />
-              
-              {!!this.state.preview && (
-                <img
-                  className='previewImg'
-                  src={this.state.preview.img}
-                  style={{
-                    borderRadius: `${(Math.min(
-                      this.state.preview.height,
-                      this.state.preview.width
-                    ) +
-                      10) *
-                      (this.state.preview.borderRadius / 2 / 100)}px`,
-                  }}
+          <Form.Field>
+            <center>
+              <Button onClick={this.props.showMap} >Байршил сонгох</Button> 
+              {!!this.props.showmap && (
+                 <GMap 
+                  showmap={this.props.showmap}
+                  showMap={this.props.showMap}
+                  coordinate={this.props.coordinate}
+                  addLocation={this.addLocation}
+                  onLocationChanged = {this.props.onLocationChanged}
                 />
               )}
-            </Segment>
+
+            </center>
           </Form.Field>
+          <Divider />
+
+          <Form.Group widths='equal'>
+            <Form.Field>
+              <Dropzone
+                onDrop={this.handleDrop}
+                disableClick
+                multiple={false}
+                style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }} >
+                <div>
+                  <AvatarEditor
+                    ref={this.setEditorRef}
+                    scale={parseFloat(this.state.scale)}
+                    width={this.state.width}
+                    height={this.state.height}
+                    position={this.state.position}
+                    onPositionChange={this.handlePositionChange}
+                    rotate={parseFloat(this.state.rotate)}
+                    borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                    onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+                    onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+                    onImageReady={this.logCallback.bind(this, 'onImageReady')}
+                    image={this.props.cover_url}
+                    className="editor-canvas"
+                  />
+                </div>
+              </Dropzone>
+            </Form.Field>
+
+              <Form.Field>
+              <Segment >
+                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={(event) => this.props.onCoverChanged(event.target.files[0]) } />
+                <Button onClick={this.uploadFile} basic color='blue' content='Зураг сонгох' />
+                <br/>
+                <br/>
+                <label className='inputLabel'>Zoom: </label>
+                <br/>
+                <input
+                  name="scale"
+                  type="range"
+                  onChange={this.handleScale}
+                  min={this.state.allowZoomOut ? '0.1' : '1'}
+                  max="2"
+                  step="0.01"
+                  defaultValue="1"
+                />
+
+                <br/>
+                <br/>
+                <label className='inputLabel' >X Position: </label><br/>
+                <input
+                  name="scale"
+                  type="range"
+                  onChange={this.handleXPosition}
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={this.state.position.x}
+                />
+
+                <br/>
+                <br/>
+                <label className='inputLabel'> Y Position: </label>
+                <br/>
+
+                <input
+                  name="scale"
+                  type="range"
+                  onChange={this.handleYPosition}
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={this.state.position.y}
+                />
+
+                <br/>
+                <br/>
+                
+                <Button primary onClick={this.handleSave} content="Preview" />
+                
+                {!!this.state.preview && (
+                  <img
+                    className='previewImg'
+                    src={this.state.preview.img}
+                    style={{
+                      borderRadius: `${(Math.min(
+                        this.state.preview.height,
+                        this.state.preview.width
+                      ) +
+                        10) *
+                        (this.state.preview.borderRadius / 2 / 100)}px`,
+                    }}
+                  />
+                )}
+              </Segment>
+            </Form.Field>
 
           </Form.Group>
             <Form.Field  className='cent'>
-              <Button type='submit' primary className='center' onClick={this.addevent} content='Нэмэх'/>
+              <Link to="/eventlist"> <Button type='submit' primary className='center' onClick={this.addevent} content='Нэмэх'/> </Link>
           </Form.Field>
 
         </Form>
       </div>
-      )
-   }
-
-
-   
+    )
+  }
 }
 

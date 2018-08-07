@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import EditEventForm from './EditEventForm.jsx'
 import { connect } from 'react-redux'
-import {  editEvent } from '../actions/actions'
+import { bindActionCreators } from 'redux'
 import { Redirect  } from 'react-router-dom'
+import { editEvent, editonChanged, editonStartAtChanged, editonEndAtChanged, editonLocationChanged, editshowMap, editonCoverChanged } from '../actions/actions'
 
-class EditEvent extends React.Component {
+class EditEvent extends Component {
 
   constructor(props) {
     super(props);
@@ -14,7 +15,7 @@ class EditEvent extends React.Component {
   }
 
   editEvent = (event) => {
-    this.props.dispatch(editEvent(event))
+    this.props.editEvent(event)
     this.setState({ navigate: true })
   }
 
@@ -31,11 +32,17 @@ class EditEvent extends React.Component {
 
     return (
       <div>
-        {
+         {
           <EditEventForm 
             key={selected_event.id}//i is this loop's iteration
             {...selected_event}
             editEvent = {this.editEvent}
+            editonChanged = {this.props.editonChanged }
+            editonStartAtChanged = {this.props.editonStartAtChanged}
+            editonEndAtChanged = {this.props.editonEndAtChanged}
+            editonLocationChanged = {this.props.editonLocationChanged}
+            editshowMap = {this.props.editshowMap}
+            editonCoverChanged = {this.props.editonCoverChanged}
           />
         }
       </div>
@@ -45,8 +52,21 @@ class EditEvent extends React.Component {
 
 function select(state) {
   return {
-    selected_event: state.events.getIn(['selected_event']).toJS()
+    selected_event: state.events.getIn(['selected_event']).toJS(),
   }
 }
 
-export default connect(select)(EditEvent);
+function mapDispatchToProps( dispatch ) {
+  return {
+    editEvent: bindActionCreators( editEvent, dispatch ),
+    editonChanged: bindActionCreators( editonChanged, dispatch ),
+    editonStartAtChanged: bindActionCreators( editonStartAtChanged, dispatch ),
+    editonEndAtChanged: bindActionCreators( editonEndAtChanged, dispatch ),
+    editonLocationChanged: bindActionCreators( editonLocationChanged, dispatch),
+    editshowMap: bindActionCreators(editshowMap, dispatch),
+    editonCoverChanged: bindActionCreators(editonCoverChanged, dispatch)
+  }
+}
+
+export default connect( select, mapDispatchToProps )( EditEvent, editEvent, editonChanged, editonStartAtChanged, editonEndAtChanged, editonLocationChanged, editshowMap, editonCoverChanged );
+
