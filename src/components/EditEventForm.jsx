@@ -155,6 +155,7 @@ export default class EditEventForm extends React.Component {
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
+
   onStartAtChanged = (date) => {
     this.props.editOnStartAtChanged(date._d)
   }
@@ -198,7 +199,7 @@ export default class EditEventForm extends React.Component {
 
           <Form.Field>
             <center>
-              <Button onClick={this.props.editshowMap} >Байршил сонгох</Button> 
+              <Button onClick={this.props.editShowMap} >Байршил сонгох</Button> 
               {!!this.props.showmap && (
                  <GMap 
                   showmap={this.props.showmap}

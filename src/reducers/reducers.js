@@ -121,6 +121,7 @@ function events(state = eventInitial, action) {
     }
 
     case EDIT_SHOWMAP: {
+      console.log('fdsfcxzv')
       let tmp = state.getIn(['selected_event']).toJS();
       tmp.showmap = !tmp.showmap;
       return state.set('selected_event', fromJS(tmp));

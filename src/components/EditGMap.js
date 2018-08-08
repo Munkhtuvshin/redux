@@ -6,7 +6,7 @@ import './Gmap.css';
 
 const CustomMarker = ({ text, }) => (<div className='klass' >{text}</div>)
 
-export default class GMap extends React.Component {
+export default class EditGMap extends React.Component {
   
 	constructor(props) {
 	  super(props);
@@ -23,7 +23,7 @@ export default class GMap extends React.Component {
 	        	<div style={{ height: '100vh', width: '100%' }}>
 		          <GoogleMap
 		            bootstrapURLKeys={{ key:'AIzaSyAGitiN41FPl8mcC3zBN7yC9Av9y5CJxEc' }}
-			        	center= { { lat: parseFloat(this.props.coordinate.lat), lng: parseFloat(this.props.coordinate.lng) } }
+			        	center= { this.props.coordinate }
 			        	zoom={8}
 			        	onClick={(value) => this.props.onLocationChanged(value)}>
 						    <CustomMarker
