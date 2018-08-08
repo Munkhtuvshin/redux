@@ -56,9 +56,9 @@ export default class EditEventForm extends React.Component {
   }
 
   editevent = () => {
-    let { title,  cover_url, start_at, end_at, coordinate } = this.props
-    let event = { title, cover_url, start_at, end_at, coordinate };
-    console.log(event);
+    let { _id, title,  cover_url, start_at, end_at, coordinate } = this.props
+    let event = { _id, title, cover_url, start_at, end_at, coordinate };
+    //console.log(event);
     this.props.editEvent(event);
   }
 
@@ -147,7 +147,7 @@ export default class EditEventForm extends React.Component {
   onChanged (event) {
     switch(event.target.id) {
       case "tit": {
-        this.props.editonChanged(1, event.target.value)
+        this.props.editOnChanged(1, event.target.value)
       }
     }
   }
@@ -155,9 +155,13 @@ export default class EditEventForm extends React.Component {
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
+  onStartAtChanged = (date) => {
+    this.props.editOnStartAtChanged(date._d)
+  }
 
   render() {
-    //console.log(this.props);
+    console.log(this.props);
+    var startAt = moment(this.props.start_at);
     return (
       <div className="addForm">
         <Form method="post" encType="multipart/form-data">
@@ -179,16 +183,16 @@ export default class EditEventForm extends React.Component {
             <DatePicker
               readOnly={true}
               id = "start_at"
-              selected={moment(this.props.start_at)}
-              onChange={ (date) => this.props.editonStartAtChanged(date) }
+              selected={ startAt }
+              onChange={ this.onStartAtChanged }
               dateFormat="LL" />
             <label className='marginLef'>Дуусах хугацаа</label>
-            <DatePicker 
+            {/*<DatePicker 
               readOnly= {true}
               id = "end_at"
               selected={moment(this.props.end_at)}
-              onChange={ (date) => this.props.editonEndAtChanged(date) }
-              dateFormat="LL" />
+              onChange={ (date) => this.props.editOnEndAtChanged(date) }
+              dateFormat="LL" />*/}
           </Form.Group>
           <Divider />
 
@@ -198,9 +202,9 @@ export default class EditEventForm extends React.Component {
               {!!this.props.showmap && (
                  <GMap 
                   showmap={this.props.showmap}
-                  showMap={this.props.editshowMap}
+                  showMap={this.props.editShowMap}
                   coordinate={this.props.coordinate}
-                  onLocationChanged = {this.props.editonLocationChanged}
+                  onLocationChanged = {this.props.editOnLocationChanged}
                 />
               )}
 
@@ -237,7 +241,7 @@ export default class EditEventForm extends React.Component {
 
               <Form.Field>
               <Segment >
-                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={(event) => this.props.editonCoverChanged(event.target.files[0]) } />
+                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={(event) => this.props.editOnCoverChanged(event.target.files[0]) } />
                 <Button onClick={this.uploadFile} basic color='blue' content='Зураг сонгох' />
                 <br/>
                 <br/>
@@ -304,8 +308,8 @@ export default class EditEventForm extends React.Component {
             </Form.Field>
 
           </Form.Group>
-            <Form.Field  className='cent'>
-             <Button type='submit' primary className='center' onClick={this.editevent} content='Засах'/>
+          <Form.Field  className='cent'>
+            <Button type='submit' primary className='center' onClick={this.editevent} content='Засах'/>
           </Form.Field>
 
         </Form>

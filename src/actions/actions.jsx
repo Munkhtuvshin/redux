@@ -39,7 +39,6 @@ export function deleteTodo(id) {
   };
 }
 export function addEvent(event) {
-  console.log(event);
   let formdata = new FormData();
   //console.log(document.getElementById('file').files[0]);
   formdata.append('cover_url', event.cover_url);
@@ -153,7 +152,7 @@ export function onCoverChanged(value) {
   }
 }
 //--------------------------Edit actions-------------------
-export function editonChanged(type, value) {
+export function editOnChanged(type, value) {
   switch (type) {
     case 1: {
       return {
@@ -163,7 +162,7 @@ export function editonChanged(type, value) {
     }
   }     
 }
-export function editonStartAtChanged(value) {
+export function editOnStartAtChanged(value) {
     console.log('actionn  :')
     console.log(value)
   return {
@@ -172,27 +171,27 @@ export function editonStartAtChanged(value) {
   }
 }
 
-export function editonEndAtChanged(value) {
+export function editOnEndAtChanged(value) {
   return {
     type: EDIT_CHANGE_END_AT,
     value
   }
 }
 
-export function editonLocationChanged(value) {
+export function editOnLocationChanged(value) {
   return {
     type: EDIT_CHANGE_LOCATION,
     value
   }
 }
 
-export function editshowMap() {
+export function editShowMap() {
   return {
     type: EDIT_SHOWMAP
   }
 }
 
-export function editonCoverChanged(value) {
+export function editOnCoverChanged(value) {
   return {
     type: EDIT_CHANGE_COVER_URL,
     value

@@ -9,7 +9,7 @@ var { Map, List,fromJS } = require('immutable');
 
 const eventInitial = fromJS({
    events: [],
-   add_event:{ title: 'hellos', start_at: moment(), end_at: moment(), cover_url: '', coordinate:{
+   add_event:{ title: '', start_at: moment(), end_at: moment(), cover_url: '', coordinate:{
         lat:47.78963221880257,
         lng:107.38140106201172
       }, showmap:false }, 
@@ -26,6 +26,8 @@ function events(state = eventInitial, action) {
 
     case EDIT_EVENT: {
       let events = state.get('events')
+      console.log(events)
+      console.log(action.event)
       var index = events.findIndex((event) => {
         return event.get('_id') == action.event._id
       })
@@ -129,58 +131,7 @@ function events(state = eventInitial, action) {
    }
 }
 
-function todo(state, action) {
-  switch (action.type) {
-    case ADD_TODO:
-      return {
-        id: action.id,
-        text: action.text,
-      }
-    default:
-      return state
-  }
-}
-function todos(state = [], action) {
-  switch (action.type) {
-    case ADD_TODO: {
-      return state.concat([{
-        id: action.id,
-        text: action.text,
-        completed: false,  
-      }])
-    }
-    case CHANGE_TODO: {
-       
-      var selectedTodo = state.find((todo) => {
-        return todo.id == action.id
-      })
-
-      var index = state.findIndex((todo) => {
-        return todo.id == action.id
-      })
-
-      var changedTodo = Object.assign( selectedTodo, {
-        completed: !selectedTodo.completed,
-      });
-
-      return state
-    }
-    case DELETE_TODO: {
-      var index = state.findIndex((todo) => {
-        return todo.id == action.id
-      })
-
-      state.splice(index, 1);
-      return [...state];
-    }  
-
-    default:
-      return state
-  }
-}
-
 const todoApp = combineReducers({
-  todos,
   events,
 })
 

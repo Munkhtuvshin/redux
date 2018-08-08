@@ -26,15 +26,15 @@ export default class Event extends React.Component {
         <Table.Cell>{rowNumber}</Table.Cell>
         <Table.Cell><Image src={this.props.cover_url} width='30' height='30'/></Table.Cell>
         <Table.Cell>{this.props.title}</Table.Cell>
-        <Table.Cell>{ moment(moment.utc(this.props.start_at)).format('LL')}</Table.Cell>
+        <Table.Cell>{ moment(moment.utc(this.props.start_at)).format('LL') }</Table.Cell>
         <Table.Cell>{moment.utc(this.props.end_at).format('LL')}</Table.Cell>
         <Table.Cell>{this.props.coordinate.lat}, {this.props.coordinate.lng}</Table.Cell>
         
         <Table.Cell>
           <center>
-            <Link to="/editevent" >
+            <Link to='/editevent'>
             <div className='onhovr'>
-               <Icon onClick = {() => this.props.setEvent(this.props)} className='borderRadius' bordered  name='edit' color="teal"  />
+               <Icon onClick = { () => this.props.setEvent(this.props)} className='borderRadius' bordered  name='edit' color="teal"  />
             </div>
             </Link>
           </center>

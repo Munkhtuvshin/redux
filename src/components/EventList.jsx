@@ -31,6 +31,7 @@ class EventList extends Component {
   }
 
   setEvent = (event) => {
+    //console.log(event)
     this.props.setEvent(event)
   }
 
@@ -64,4 +65,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(select, mapDispatchToProps)(EventList);
+export default connect(select, mapDispatchToProps)(EventList, deleteEvent, setAllEvent, setEvent);
