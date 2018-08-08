@@ -157,7 +157,7 @@ export default class EditEventForm extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    //console.log(this.props);
     return (
       <div className="addForm">
         <Form method="post" encType="multipart/form-data">

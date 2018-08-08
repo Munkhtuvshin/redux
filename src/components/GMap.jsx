@@ -13,7 +13,8 @@ export default class GMap extends React.Component {
 	}
 
   render(){
-
+  	let g = this.props.coordinate
+  	console.log(g);
     return (
 		  <Modal open={this.props.showmap}>
 	      <Modal.Header>Байршил сонгох</Modal.Header>
@@ -22,12 +23,12 @@ export default class GMap extends React.Component {
 	        	<div style={{ height: '100vh', width: '100%' }}>
 		          <GoogleMap
 		            bootstrapURLKeys={{ key:'AIzaSyAGitiN41FPl8mcC3zBN7yC9Av9y5CJxEc' }}
-			        	center={this.props.coordinate}
+			        	center= { { lat: parseFloat(this.props.coordinate.lat), lng: parseFloat(this.props.coordinate.lng) } }
 			        	zoom={8}
 			        	onClick={(value) => this.props.onLocationChanged(value)}>
 						    <CustomMarker
-						      lat={this.props.coordinate.lat}
-							  	lng={this.props.coordinate.lng}
+						      lat={ parseFloat(this.props.coordinate.lat) }
+							  	lng={ parseFloat(this.props.coordinate.lng) }
 						      text=" ">
 					      </CustomMarker>
 			      	</GoogleMap>

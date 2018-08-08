@@ -11,7 +11,7 @@ const eventInitial = fromJS({
    events: [],
    add_event:{ title: 'hellos', start_at: moment(), end_at: moment(), cover_url: '', coordinate:{
         lat:47.78963221880257,
-        lng:107.38140106201172,  
+        lng:107.38140106201172
       }, showmap:false }, 
    selected_event: {},
 })
