@@ -17,17 +17,12 @@ const concat = require("concat-stream")
 var FormData = require('form-data');
 var targetFile =null;
 
-export default class EditEventForm extends React.Component {
+export default class EditEventForm extends React.Component { 
 
-  componentWillUpdate(){
-
-  }
   constructor(props) {
     super(props);
     this.state = {
-
       navigate:false,
-
       allowZoomOut: false,
       position: { x: 0.5, y: 0.5 },
       scale: 1,
@@ -160,6 +155,10 @@ export default class EditEventForm extends React.Component {
     this.props.editOnStartAtChanged(date._d)
   }
 
+  onEndAtChanged = (date) => {
+    this.props.editOnEndAtChanged(date._d)
+  }
+
   render() {
     console.log(this.props);
     var startAt = moment(this.props.start_at);
@@ -174,12 +173,12 @@ export default class EditEventForm extends React.Component {
             type='text'
             value={this.props.title}
             onChange={ ( event ) => this.onChanged( event ) }
-            placeholder='Гарчиг' />
+            placeholder = 'Гарчиг' />
           </Form.Field>
 
           <Divider />
 
-          <Form.Group widths='equal'>
+          <Form.Group widths = 'equal'>
             <label className='self' htmlFor="start_at" >Эхлэх хугацаа</label>
             <DatePicker
               readOnly={true}
@@ -188,13 +187,14 @@ export default class EditEventForm extends React.Component {
               onChange={ this.onStartAtChanged }
               dateFormat="LL" />
             <label className='marginLef'>Дуусах хугацаа</label>
-            {/*<DatePicker 
+            <DatePicker 
               readOnly= {true}
               id = "end_at"
               selected={moment(this.props.end_at)}
-              onChange={ (date) => this.props.editOnEndAtChanged(date) }
-              dateFormat="LL" />*/}
+              onChange={ this.onEndAtChanged }
+              dateFormat="LL" />
           </Form.Group>
+
           <Divider />
 
           <Form.Field>
@@ -208,9 +208,9 @@ export default class EditEventForm extends React.Component {
                   onLocationChanged = {this.props.editOnLocationChanged}
                 />
               )}
-
             </center>
           </Form.Field>
+
           <Divider />
 
           <Form.Group widths='equal'>

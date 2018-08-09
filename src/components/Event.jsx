@@ -21,6 +21,7 @@ export default class Event extends React.Component {
     let {
       rowNumber
     } = this.props
+    console.log( this.props )
     return (
       <Table.Row >
         <Table.Cell>{rowNumber}</Table.Cell>

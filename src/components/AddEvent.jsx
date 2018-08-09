@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import AddEventForm from './AddEventForm.jsx'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { addEvent, onChanged, onStartAtChanged, onEndAtChanged, onLocationChanged, showMap, onCoverChanged } from '../actions/actions'
+import { addEvent, onChanged, onStartAtChanged, onEndAtChanged, onLocationChanged, showMap, onCoverChanged,
+         handleScale, handlePositionChange, handleXPosition, handleYPosition, setPreview 
+       } from '../actions/actions'
 
 class AddEvent extends React.Component {
 
@@ -15,7 +17,7 @@ class AddEvent extends React.Component {
   }
 
   render() {
-    const { add_event } = this.props
+    const { add_event, add_event_editor } = this.props
     // console.log(this.props);
     return (
       <div>
@@ -28,7 +30,14 @@ class AddEvent extends React.Component {
             onLocationChanged = {this.props.onLocationChanged}
             showMap = {this.props.showMap}
             onCoverChanged = {this.props.onCoverChanged}
+            handleScale = {this.props.handleScale}
+            handlePositionChange = {this.props.handlePositionChange}
+            handleXPosition = {this.props.handleXPosition}
+            handleXPosition = {this.props.handleXPosition}
+            handleYPosition = {this.props.handleYPosition}
+            setPreview = {this.props.setPreview}
             {...add_event}
+            {...add_event_editor}
           />
         }
       </div>
@@ -38,7 +47,8 @@ class AddEvent extends React.Component {
 
 function select( state ) {
   return {
-    add_event: state.events.getIn(['add_event']).toJS()
+    add_event: state.events.getIn(['add_event']).toJS(),
+    add_event_editor: state.events.getIn(['add_event_editor']).toJS()
   }
 }
 
@@ -50,8 +60,14 @@ function mapDispatchToProps( dispatch ) {
     onEndAtChanged: bindActionCreators( onEndAtChanged, dispatch ),
     onLocationChanged: bindActionCreators( onLocationChanged, dispatch),
     showMap: bindActionCreators(showMap, dispatch),
-    onCoverChanged: bindActionCreators(onCoverChanged, dispatch)
+    onCoverChanged: bindActionCreators(onCoverChanged, dispatch),
+    handleScale: bindActionCreators(handleScale, dispatch),
+    handlePositionChange: bindActionCreators(handlePositionChange, dispatch),
+    handleXPosition: bindActionCreators(handleXPosition, dispatch),
+    handleYPosition: bindActionCreators(handleYPosition, dispatch),
+    setPreview: bindActionCreators(setPreview, dispatch)
   }
 }
 
-export default connect( select, mapDispatchToProps )( AddEvent, addEvent, onChanged, onStartAtChanged, onEndAtChanged, onLocationChanged, showMap, onCoverChanged );
+export default connect( select, mapDispatchToProps )( AddEvent, addEvent, onChanged, onStartAtChanged, onEndAtChanged, onLocationChanged, showMap, onCoverChanged, 
+                        handleScale, handlePositionChange, handleXPosition, handleYPosition, setPreview );

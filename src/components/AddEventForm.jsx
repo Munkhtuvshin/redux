@@ -25,9 +25,6 @@ export default class AddEventForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
-      navigate:false,
-
       allowZoomOut: false,
       position: { x: 0.5, y: 0.5 },
       scale: 1,
@@ -36,56 +33,37 @@ export default class AddEventForm extends React.Component {
       preview: null,
       width: 300,
       height: 300,
-      showMap:false,
     }
   }
 
   handleSave = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL()
     const rect = this.editor.getCroppingRect()
-    this.setState({
-      preview: {
+    this.props.setPreview(
+      {
         img,
         rect,
-        scale: this.state.scale,
-        width: this.state.width,
-        height: this.state.height,
-        borderRadius: this.state.borderRadius,
+        scale: this.props.scale,
+        width: this.props.width,
+        height: this.props.height,
+        borderRadius: this.props.borderRadius,
       },
-    })
+    )
   }
 
   addevent = () => {
-    //console.log(this.props);
     let { title,  cover_url, start_at, end_at, coordinate } = this.props
     let event = { title, cover_url, start_at, end_at, coordinate };
     this.props.addEvent(event);
   }
 
   handleScale = e => {
-    const scale = parseFloat(e.target.value)
-    this.setState({
-      scale 
-    })
+    this.props.handleScale(e)
   }
 
   handleAllowZoomOut = ({ target: { checked: allowZoomOut } }) => {
     this.setState({ 
       allowZoomOut 
-    })
-  }
-
-  rotateLeft = e => {
-    e.preventDefault()
-    this.setState({
-      rotate: this.state.rotate - 90,
-    })
-  }
-
-  rotateRight = e => {
-    e.preventDefault()
-    this.setState({
-      rotate: this.state.rotate + 90,
     })
   }
 
@@ -96,18 +74,16 @@ export default class AddEventForm extends React.Component {
     })
   }
 
+  handlePositionChange = position => {
+    this.props.handlePositionChange(position)
+  }
+
   handleXPosition = e => {
-    const x = parseFloat(e.target.value)
-    this.setState({ position: { 
-      ...this.state.position, x } 
-    })
+    this.props.handleXPosition(e)
   }
 
   handleYPosition = e => {
-    const y = parseFloat(e.target.value)
-    this.setState({  
-      position: { ...this.state.position, y } 
-    })
+    this.props.handleYPosition(e)
   }
 
   handleWidth = e => {
@@ -130,12 +106,6 @@ export default class AddEventForm extends React.Component {
 
   setEditorRef = editor => {
     if (editor) this.editor = editor
-  }
-
-  handlePositionChange = position => {
-    this.setState({  
-      position  
-    })
   }
 
   handleDrop = acceptedFiles => {
@@ -164,22 +134,17 @@ export default class AddEventForm extends React.Component {
 
   render() {
     // console.log('add event form');
-    //console.log(this.props);
+    console.log(this.props);
     var tr =false;
     let {
       title,
       cover_url,
       start_at,
       end_at,
-      navigate,
       coordinate,
       showMap,
     } = this.state
     
-    if (navigate) {
-      return <Redirect to="/eventlist" push={true} />
-    }
-
     return (
       <div className="addForm">
         <Form method="post" encType="multipart/form-data">
@@ -241,13 +206,12 @@ export default class AddEventForm extends React.Component {
                 <div>
                   <AvatarEditor
                     ref={this.setEditorRef}
-                    scale={parseFloat(this.state.scale)}
-                    width={this.state.width}
-                    height={this.state.height}
-                    position={this.state.position}
+                    scale={parseFloat(this.props.scale)}
+                    width={this.props.width}
+                    height={this.props.height}
+                    position={this.props.position}
                     onPositionChange={this.handlePositionChange}
-                    rotate={parseFloat(this.state.rotate)}
-                    borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                    borderRadius={this.props.width / (100 / this.props.borderRadius)}
                     onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
                     onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
                     onImageReady={this.logCallback.bind(this, 'onImageReady')}
@@ -282,11 +246,11 @@ export default class AddEventForm extends React.Component {
                 <input
                   name="scale"
                   type="range"
-                  onChange={this.handleXPosition}
+                  onChange={this.props.handleXPosition}
                   min="0"
                   max="1"
                   step="0.01"
-                  value={this.state.position.x}
+                  value={this.props.position.x}
                 />
 
                 <br/>
@@ -297,11 +261,11 @@ export default class AddEventForm extends React.Component {
                 <input
                   name="scale"
                   type="range"
-                  onChange={this.handleYPosition}
+                  onChange={this.props.handleYPosition}
                   min="0"
                   max="1"
                   step="0.01"
-                  value={this.state.position.y}
+                  value={this.props.position.y}
                 />
 
                 <br/>
@@ -309,17 +273,17 @@ export default class AddEventForm extends React.Component {
                 
                 <Button primary onClick={this.handleSave} content="Preview" />
                 
-                {!!this.state.preview && (
+                {!!this.props.preview && (
                   <img
                     className='previewImg'
-                    src={this.state.preview.img}
+                    src={this.props.preview.img}
                     style={{
                       borderRadius: `${(Math.min(
-                        this.state.preview.height,
-                        this.state.preview.width
+                        this.props.preview.height,
+                        this.props.preview.width
                       ) +
                         10) *
-                        (this.state.preview.borderRadius / 2 / 100)}px`,
+                        (this.props.preview.borderRadius / 2 / 100)}px`,
                     }}
                   />
                 )}

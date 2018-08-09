@@ -1,8 +1,5 @@
 import axios from 'axios';
 import moment from 'moment';
-export const ADD_TODO = 'ADD_TODO'
-export const DELETE_TODO = 'DELETE_TODO'
-export const CHANGE_TODO = 'CHANGE_TODO'
 export const ADD_EVENT = 'ADD_EVENT'
 export const DELETE_EVENT = 'DELETE_EVENT'
 export const EDIT_EVENT = 'EDIT_EVENT'
@@ -22,22 +19,7 @@ export const EDIT_CHANGE_COVER_URL = 'EDIT_CHANGE_COVER_URL'
 export const EDIT_CHANGE_LOCATION = 'EDIT_CHANGE_LOCATIOM'
 export const EDIT_SHOWMAP = 'EDIT_SHOWMAP'
 
-let nextTodoId = 0;
-
-export function addTodo(text) {
-  return {
-    type: ADD_TODO,
-    id: nextTodoId++,
-    text
-  };
-}
-
-export function deleteTodo(id) {
-  return {
-    type: DELETE_TODO,
-    id,
-  };
-}
+//---------------------EVENT actions---------------------
 export function addEvent(event) {
   let formdata = new FormData();
   //console.log(document.getElementById('file').files[0]);
@@ -106,7 +88,7 @@ export function setAllEvent() {
     })
    }
 }
-
+//-------------addEventForm actions-----------------
 export function onChanged(type, value) {
   switch (type) {
     case 1: {
@@ -151,6 +133,42 @@ export function onCoverChanged(value) {
     value
   }
 }
+
+//-----------addFormEditor actions------
+export function handleScale( e ) {
+  let scale = parseFloat(e.target.value)
+  return {
+    type: 'addFormScale',
+    scale
+  }
+}
+export function handlePositionChange( position ) {
+  return {
+    type: 'position change',
+    position
+  }
+}
+export function handleXPosition( e ) {
+  let x = parseFloat(e.target.value)
+  return {
+    type: 'position x change',
+    x
+  }
+}
+export function handleYPosition( e ) {
+  let y = parseFloat(e.target.value)
+  return {
+    type: 'position y change',
+    y
+  }
+}
+export function setPreview( preview ) {
+  return {
+    type: 'set Preview',
+    preview
+  }
+}
+
 //--------------------------Edit actions-------------------
 export function editOnChanged(type, value) {
   switch (type) {
