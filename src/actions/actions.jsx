@@ -22,7 +22,6 @@ export const EDIT_SHOWMAP = 'EDIT_SHOWMAP'
 //---------------------EVENT actions-------------------
 export function addEvent(event) {
   let formdata = new FormData();
-  //console.log(document.getElementById('file').files[0]);
   formdata.append('cover_url', event.cover_url);
   formdata.append('title', event.title);
   formdata.append('start_at', event.start_at);
@@ -46,6 +45,30 @@ export function addEvent(event) {
   } 
 }
 
+export function editEvent(event) {
+  let formdata = new FormData();
+  formdata.append('cover_url', event.cover_url);
+  formdata.append('title', event.title);
+  formdata.append('start_at', event.start_at);
+  formdata.append('end_at', event.end_at);
+  formdata.append('lat', event.coordinate.lat);
+  formdata.append('lng', event.coordinate.lng);
+  return dispatch => {
+    axios({
+    method: 'put',
+    url: 'http://localhost:8081/event/'+event._id,
+    data: formdata,
+    config: { headers: {'Content-Type': 'multipart/form-data' }}
+    })
+    .then(function (response) {
+        dispatch( {
+          type: EDIT_EVENT,
+          event,
+        })
+    })
+  } 
+}
+
 export function deleteEvent(id) {
   return dispatch => {
     axios.delete('http://localhost:8081/event/'+id)
@@ -53,18 +76,6 @@ export function deleteEvent(id) {
       dispatch({
         type: DELETE_EVENT,
         id,
-      })
-    })
-  }
-}
-
-export function editEvent(event) {
-  return dispatch => {
-    axios.put('http://localhost:8081/event/'+event._id, event)
-    .then( (response) =>{
-      dispatch( {
-        type: EDIT_EVENT,
-        event,
       })
     })
   }

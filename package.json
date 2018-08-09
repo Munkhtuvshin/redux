@@ -6,6 +6,9 @@
     "axios": "^0.18.0",
     "concat-stream": "^1.6.2",
     "form-data": "^2.3.2",
+    "form-serialize": "^0.7.2",
+    "formsy-react": "^1.1.4",
+    "formsy-semantic-ui-react": "^0.3.3",
     "google-map-react": "1.0.4",
     "google-maps-react": "^2.0.2",
     "immutable": "^3.8.2",
@@ -21,10 +24,13 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
+    "react-validation": "^3.0.7",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.3.3",
     "semantic-ui-react": "^0.82.1",
+    "simple-react-validator": "^0.0.8",
+    "validator": "^10.5.0",
     "webpack-dev-server": "^3.1.5"
   },
   "scripts": {

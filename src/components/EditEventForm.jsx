@@ -65,7 +65,7 @@ export default class EditEventForm extends React.Component {
   }
 
   logCallback(e) {
-    console.log('callback', e)
+    //console.log('callback', e)
   }
 
   setEditorRef = editor => {
@@ -103,6 +103,7 @@ export default class EditEventForm extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="addForm">
         <Form method="post" encType="multipart/form-data">

@@ -17,7 +17,8 @@ const concat = require("concat-stream")
 var FormData = require('form-data');
 var targetFile =null;
 
-export default class AddEventForm extends React.Component {
+
+export default class AddEventForm extends Component {
 
   componentWillUpdate(){
 
@@ -25,6 +26,7 @@ export default class AddEventForm extends React.Component {
   constructor(props) {
     super(props);
   }
+
 
   handleSave = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL()
@@ -89,7 +91,7 @@ export default class AddEventForm extends React.Component {
       height 
     })
   }
-
+  
   logCallback(e) {
     console.log('callback', e)
   }
@@ -112,6 +114,16 @@ export default class AddEventForm extends React.Component {
     }
   }
 
+  onStartAtChanged = (date) =>{
+    this.props.onStartAtChanged(date)
+  }
+
+  onEndAtChanged = (date) => {
+    this.props.onEndAtChanged(date)
+  }
+  onCoverChanged = (e) => {
+    this.props.onCoverChanged(e.target.files[0])
+  }
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
@@ -129,7 +141,8 @@ export default class AddEventForm extends React.Component {
             type='text'
             value={this.props.title}
             onChange={ ( event ) => this.onChanged( event ) }
-            placeholder='Гарчиг' />
+            placeholder='Гарчиг'
+            />
           </Form.Field>
 
           <Divider />
@@ -140,14 +153,14 @@ export default class AddEventForm extends React.Component {
               readOnly={true}
               id = "start_at"
               selected={this.props.start_at}
-              onChange={ (date) => this.props.onStartAtChanged(date) }
+              onChange={ this.onStartAtChanged }
               dateFormat="LL" />
             <label className='marginLef'>Дуусах хугацаа</label>
             <DatePicker 
               readOnly= {true}
               id = "end_at"
               selected={this.props.end_at}
-              onChange={ (date) => this.props.onEndAtChanged(date) }
+              onChange={ this.onEndAtChanged }
               dateFormat="LL" />
           </Form.Group>
           <Divider />
@@ -197,7 +210,7 @@ export default class AddEventForm extends React.Component {
 
               <Form.Field>
               <Segment >
-                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={(event) => this.props.onCoverChanged(event.target.files[0]) } />
+                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={ this.onCoverChanged } />
                 <Button onClick={this.uploadFile} basic color='blue' content='Зураг сонгох' />
                 <br/>
                 <br/>
