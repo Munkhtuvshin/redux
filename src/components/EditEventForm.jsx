@@ -21,33 +21,21 @@ export default class EditEventForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      navigate:false,
-      allowZoomOut: false,
-      position: { x: 0.5, y: 0.5 },
-      scale: 1,
-      rotate: 0,
-      borderRadius: 0,
-      preview: null,
-      width: 300,
-      height: 300,
-      showMap:false,
-    }
   }
 
   handleSave = data => {
     const img = this.editor.getImageScaledToCanvas().toDataURL()
     const rect = this.editor.getCroppingRect()
-    this.setState({
-      preview: {
+    this.props.edit_setPreview(
+      {
         img,
         rect,
-        scale: this.state.scale,
-        width: this.state.width,
-        height: this.state.height,
-        borderRadius: this.state.borderRadius,
-      },
-    })
+        scale: this.props.scale,
+        width: this.props.width,
+        height: this.props.height,
+        borderRadius: this.props.borderRadius,
+      }
+    )
   }
 
   editevent = () => {
@@ -58,30 +46,7 @@ export default class EditEventForm extends React.Component {
   }
 
   handleScale = e => {
-    const scale = parseFloat(e.target.value)
-    this.setState({
-      scale 
-    })
-  }
-
-  handleAllowZoomOut = ({ target: { checked: allowZoomOut } }) => {
-    this.setState({ 
-      allowZoomOut 
-    })
-  }
-
-  rotateLeft = e => {
-    e.preventDefault()
-    this.setState({
-      rotate: this.state.rotate - 90,
-    })
-  }
-
-  rotateRight = e => {
-    e.preventDefault()
-    this.setState({
-      rotate: this.state.rotate + 90,
-    })
+    this.props.edit_handleScale(e)
   }
 
   handleBorderRadius = e => {
@@ -92,31 +57,11 @@ export default class EditEventForm extends React.Component {
   }
 
   handleXPosition = e => {
-    const x = parseFloat(e.target.value)
-    this.setState({ position: { 
-      ...this.state.position, x } 
-    })
+    this.props.edit_handleXPosition(e)
   }
 
   handleYPosition = e => {
-    const y = parseFloat(e.target.value)
-    this.setState({  
-      position: { ...this.state.position, y } 
-    })
-  }
-
-  handleWidth = e => {
-    const width = parseInt(e.target.value)
-    this.setState({
-      width 
-    })
-  }
-
-  handleHeight = e => {
-    const height = parseInt(e.target.value)
-    this.setState({
-      height 
-    })
+    this.props.edit_handleYPosition(e)
   }
 
   logCallback(e) {
@@ -128,15 +73,13 @@ export default class EditEventForm extends React.Component {
   }
 
   handlePositionChange = position => {
-    this.setState({  
-      position  
-    })
+    this.props.edit_handlePositionChange(position)
   }
 
   handleDrop = acceptedFiles => {
-    this.setState({ 
-      image: acceptedFiles[0] 
-    })
+    // this.setState({ 
+    //   image: acceptedFiles[0] 
+    // })
   }
 
   onChanged (event) {
@@ -160,8 +103,6 @@ export default class EditEventForm extends React.Component {
   }
 
   render() {
-    console.log(this.props);
-    var startAt = moment(this.props.start_at);
     return (
       <div className="addForm">
         <Form method="post" encType="multipart/form-data">
@@ -183,7 +124,7 @@ export default class EditEventForm extends React.Component {
             <DatePicker
               readOnly={true}
               id = "start_at"
-              selected={ startAt }
+              selected={ moment(this.props.start_at) }
               onChange={ this.onStartAtChanged }
               dateFormat="LL" />
             <label className='marginLef'>Дуусах хугацаа</label>
@@ -219,17 +160,16 @@ export default class EditEventForm extends React.Component {
                 onDrop={this.handleDrop}
                 disableClick
                 multiple={false}
-                style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }} >
+                style={{ width: this.props.width, height: this.props.height, marginBottom:'35px' }} >
                 <div>
                   <AvatarEditor
                     ref={this.setEditorRef}
-                    scale={parseFloat(this.state.scale)}
-                    width={this.state.width}
-                    height={this.state.height}
-                    position={this.state.position}
+                    scale={parseFloat(this.props.scale)}
+                    width={this.props.width}
+                    height={this.props.height}
+                    position={this.props.position}
                     onPositionChange={this.handlePositionChange}
-                    rotate={parseFloat(this.state.rotate)}
-                    borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                    borderRadius={this.props.width / (100 / this.props.borderRadius)}
                     onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
                     onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
                     onImageReady={this.logCallback.bind(this, 'onImageReady')}
@@ -252,7 +192,7 @@ export default class EditEventForm extends React.Component {
                   name="scale"
                   type="range"
                   onChange={this.handleScale}
-                  min={this.state.allowZoomOut ? '0.1' : '1'}
+                  min={this.props.allowZoomOut ? '0.1' : '1'}
                   max="2"
                   step="0.01"
                   defaultValue="1"
@@ -268,7 +208,7 @@ export default class EditEventForm extends React.Component {
                   min="0"
                   max="1"
                   step="0.01"
-                  value={this.state.position.x}
+                  value={this.props.position.x}
                 />
 
                 <br/>
@@ -283,7 +223,7 @@ export default class EditEventForm extends React.Component {
                   min="0"
                   max="1"
                   step="0.01"
-                  value={this.state.position.y}
+                  value={this.props.position.y}
                 />
 
                 <br/>
@@ -291,17 +231,17 @@ export default class EditEventForm extends React.Component {
                 
                 <Button primary onClick={this.handleSave} content="Preview" />
                 
-                {!!this.state.preview && (
+                {!!this.props.preview && (
                   <img
                     className='previewImg'
-                    src={this.state.preview.img}
+                    src={this.props.preview.img}
                     style={{
                       borderRadius: `${(Math.min(
-                        this.state.preview.height,
-                        this.state.preview.width
+                        this.props.preview.height,
+                        this.props.preview.width
                       ) +
                         10) *
-                        (this.state.preview.borderRadius / 2 / 100)}px`,
+                        (this.props.preview.borderRadius / 2 / 100)}px`,
                     }}
                   />
                 )}

@@ -3,7 +3,9 @@ import EditEventForm from './EditEventForm.jsx'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Redirect  } from 'react-router-dom'
-import { editEvent, editOnChanged, editOnStartAtChanged, editOnEndAtChanged, editOnLocationChanged, editShowMap, editOnCoverChanged } from '../actions/actions'
+import { editEvent, editOnChanged, editOnStartAtChanged, editOnEndAtChanged, editOnLocationChanged, editShowMap, editOnCoverChanged,
+          edit_handleScale, edit_handlePositionChange, edit_handleXPosition, edit_handleYPosition, edit_setPreview 
+        } from '../actions/actions'
 
 class EditEvent extends Component {
 
@@ -28,7 +30,7 @@ class EditEvent extends Component {
       return <Redirect to="/eventlist" push={true} />
     }
 
-    const { dispatch, selected_event } = this.props
+    const { dispatch, selected_event, edit_event_editor } = this.props
 
     return (
       <div>
@@ -36,6 +38,7 @@ class EditEvent extends Component {
           <EditEventForm 
             key={selected_event.id}//i is this loop's iteration
             {...selected_event}
+            {...edit_event_editor}
             editEvent = {this.editEvent}
             editOnChanged = {this.props.editOnChanged }
             editOnStartAtChanged = {this.props.editOnStartAtChanged}
@@ -43,6 +46,11 @@ class EditEvent extends Component {
             editOnLocationChanged = {this.props.editOnLocationChanged}
             editShowMap = {this.props.editShowMap}
             editOnCoverChanged = {this.props.editOnCoverChanged}
+            edit_handleScale = {this.props.edit_handleScale}
+            edit_handlePositionChange = {this.props.edit_handlePositionChange}
+            edit_handleXPosition = {this.props.edit_handleXPosition}
+            edit_handleYPosition = {this.props.edit_handleYPosition}
+            edit_setPreview = {this.props.edit_setPreview}
           />
         }
       </div>
@@ -53,6 +61,7 @@ class EditEvent extends Component {
 function select(state) {
   return {
     selected_event: state.events.getIn(['selected_event']).toJS(),
+    edit_event_editor: state.events.getIn(['edit_event_editor']).toJS()
   }
 }
 
@@ -64,9 +73,16 @@ function mapDispatchToProps( dispatch ) {
     editOnEndAtChanged: bindActionCreators( editOnEndAtChanged, dispatch ),
     editOnLocationChanged: bindActionCreators( editOnLocationChanged, dispatch),
     editShowMap: bindActionCreators(editShowMap, dispatch),
-    editOnCoverChanged: bindActionCreators(editOnCoverChanged, dispatch)
+    editOnCoverChanged: bindActionCreators(editOnCoverChanged, dispatch),
+    edit_handleScale: bindActionCreators(edit_handleScale, dispatch),
+    edit_handlePositionChange: bindActionCreators(edit_handlePositionChange, dispatch),
+    edit_handleXPosition: bindActionCreators(edit_handleXPosition, dispatch),
+    edit_handleYPosition: bindActionCreators(edit_handleYPosition, dispatch),
+    edit_setPreview: bindActionCreators(edit_setPreview, dispatch),
   }
 }
 
-export default connect( select, mapDispatchToProps )( EditEvent, editEvent, editOnChanged, editOnStartAtChanged, editOnEndAtChanged, editOnLocationChanged, editShowMap, editOnCoverChanged );
+export default connect( select, mapDispatchToProps )( EditEvent, editEvent, editOnChanged, editOnStartAtChanged, editOnEndAtChanged, editOnLocationChanged, editShowMap, editOnCoverChanged, 
+                        edit_handleYPosition, edit_handleXPosition, edit_handlePositionChange, edit_handleScale, edit_setPreview
+                      );
 

@@ -14,6 +14,8 @@ const eventInitial = fromJS({
             },
   add_event_editor:{ allowZoomOut: false, position: { x: 0.5, y: 0.5 }, scale: 1, 
               rotate: 0, borderRadius: 0, preview: null, width: 300, height: 300,},
+  edit_event_editor:{ allowZoomOut: false, position: { x: 0.5, y: 0.5 }, scale: 1, 
+                rotate: 0, borderRadius: 0, preview: null, width: 300, height: 300,},
   selected_event: {},
 })
 
@@ -142,7 +144,33 @@ function events(state = eventInitial, action) {
       tmp.showmap = !tmp.showmap;
       return state.set('selected_event', fromJS(tmp));
     }
-
+    //---------editFormEditor actions-------
+    case 'editFormScale': {
+      let tmp = state.getIn(['edit_event_editor']).toJS();
+      tmp.scale = action.scale;
+      return state.set('edit_event_editor', fromJS(tmp))
+    }
+    case 'edit_form image editor position change': {
+      let tmp = state.getIn(['edit_event_editor']).toJS();
+      tmp.position = action.position;
+      return state.set('edit_event_editor', fromJS(tmp))
+    }
+    case 'edit_form image editor position x change': {
+      let tmp = state.getIn(['edit_event_editor']).toJS();
+      tmp.position.x = action.x;
+      return state.set('edit_event_editor', fromJS(tmp))
+    }
+    case 'edit_form image editor position y change': {
+      let tmp = state.getIn(['edit_event_editor']).toJS();
+      tmp.position.y = action.y;
+      return state.set('edit_event_editor', fromJS(tmp))
+    }
+    case 'edit_form image editor set Preview': {
+      let tmp = state.getIn(['edit_event_editor']).toJS();
+      tmp.preview = action.preview;
+      return state.set('edit_event_editor', fromJS(tmp))
+    }
+    
     default:
       return state
    }

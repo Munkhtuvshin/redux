@@ -24,16 +24,6 @@ export default class AddEventForm extends React.Component {
   }
   constructor(props) {
     super(props);
-    this.state = {
-      allowZoomOut: false,
-      position: { x: 0.5, y: 0.5 },
-      scale: 1,
-      rotate: 0,
-      borderRadius: 0,
-      preview: null,
-      width: 300,
-      height: 300,
-    }
   }
 
   handleSave = data => {
@@ -121,30 +111,13 @@ export default class AddEventForm extends React.Component {
       }
     }
   }
-  
-  showMap = () =>{
-    this.setState({
-      show:!this.state.show
-    });
-  }
 
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
 
   render() {
-    // console.log('add event form');
-    console.log(this.props);
-    var tr =false;
-    let {
-      title,
-      cover_url,
-      start_at,
-      end_at,
-      coordinate,
-      showMap,
-    } = this.state
-    
+    // console.log('add event form');    
     return (
       <div className="addForm">
         <Form method="post" encType="multipart/form-data">
@@ -202,7 +175,7 @@ export default class AddEventForm extends React.Component {
                 onDrop={this.handleDrop}
                 disableClick
                 multiple={false}
-                style={{ width: this.state.width, height: this.state.height, marginBottom:'35px' }} >
+                style={{ width: this.props.width, height: this.props.height, marginBottom:'35px' }} >
                 <div>
                   <AvatarEditor
                     ref={this.setEditorRef}
@@ -234,7 +207,7 @@ export default class AddEventForm extends React.Component {
                   name="scale"
                   type="range"
                   onChange={this.handleScale}
-                  min={this.state.allowZoomOut ? '0.1' : '1'}
+                  min={this.props.allowZoomOut ? '0.1' : '1'}
                   max="2"
                   step="0.01"
                   defaultValue="1"

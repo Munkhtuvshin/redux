@@ -19,7 +19,7 @@ export const EDIT_CHANGE_COVER_URL = 'EDIT_CHANGE_COVER_URL'
 export const EDIT_CHANGE_LOCATION = 'EDIT_CHANGE_LOCATIOM'
 export const EDIT_SHOWMAP = 'EDIT_SHOWMAP'
 
-//---------------------EVENT actions---------------------
+//---------------------EVENT actions-------------------
 export function addEvent(event) {
   let formdata = new FormData();
   //console.log(document.getElementById('file').files[0]);
@@ -88,7 +88,7 @@ export function setAllEvent() {
     })
    }
 }
-//-------------addEventForm actions-----------------
+//---------addEventForm actions--------
 export function onChanged(type, value) {
   switch (type) {
     case 1: {
@@ -134,7 +134,7 @@ export function onCoverChanged(value) {
   }
 }
 
-//-----------addFormEditor actions------
+//---------addFormEditor actions------
 export function handleScale( e ) {
   let scale = parseFloat(e.target.value)
   return {
@@ -169,7 +169,7 @@ export function setPreview( preview ) {
   }
 }
 
-//--------------------------Edit actions-------------------
+//------------EditForm actions------------
 export function editOnChanged(type, value) {
   switch (type) {
     case 1: {
@@ -213,5 +213,40 @@ export function editOnCoverChanged(value) {
   return {
     type: EDIT_CHANGE_COVER_URL,
     value
+  }
+}
+
+//----------EditFormEditor actions---------
+export function edit_handleScale( e ) {
+  let scale = parseFloat(e.target.value)
+  return {
+    type: 'editFormScale',
+    scale
+  }
+}
+export function edit_handlePositionChange( position ) {
+  return {
+    type: 'edit_form image editor position change',
+    position
+  }
+}
+export function edit_handleXPosition( e ) {
+  let x = parseFloat(e.target.value)
+  return {
+    type: 'edit_form image editor position x change',
+    x
+  }
+}
+export function edit_handleYPosition( e ) {
+  let y = parseFloat(e.target.value)
+  return {
+    type: 'edit_form image editor position y change',
+    y
+  }
+}
+export function edit_setPreview( preview ) {
+  return {
+    type: 'edit_form image editor set Preview',
+    preview
   }
 }
