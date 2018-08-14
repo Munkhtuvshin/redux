@@ -50,7 +50,7 @@ export default class AddEventForm extends Component {
     var re = new RegExp('@|#');
    
     if(re.test(title) | title.length < 4) {
-      document.getElementById('title').innerHTML=' Хэт богино эсвэл хориотой тэмдэгт орсон байна.';
+      document.getElementById('title').innerHTML=' Хэт богино эсвэл онцгой тэмдэгт орсон байна.';
       document.getElementById('title').style.color='red';
       counter++;
     }
@@ -65,6 +65,14 @@ export default class AddEventForm extends Component {
     else{
       document.getElementById('endAt').innerHTML = ''
     }
+    if( moment(beeco_start_at).format('LLL')==moment(beeco_end_at).format('LLL') ) {
+      document.getElementById('beeco_endAt').innerHTML = ' Эхлэх хугацаа Дуусах хугацаа хоёр давхцсан байна'
+      document.getElementById('beeco_endAt').style.color = 'red'
+      counter++;
+    }
+    else {
+      document.getElementById('beeco_endAt').innerHTML = '';
+    }
     if( cover_url == ''){
       document.getElementById('coverUrl').innerHTML = ' Зураг оруулна уу'
       document.getElementById('coverUrl').style.color = 'red'
@@ -73,7 +81,7 @@ export default class AddEventForm extends Component {
     else{
       document.getElementById('coverUrl').innerHTML = ''
     }
-    if( coordinate.lat==47.78963221880257 & coordinate.lng==107.38140106201172 ) {
+    if( coordinate.lat==47.920659 & coordinate.lng==106.917636 ) {
       document.getElementById('location').innerHTML = ' Байршил оруулна уу'
       document.getElementById('location').style.color = 'red'
       counter++;
@@ -149,31 +157,29 @@ export default class AddEventForm extends Component {
   }
 
   changeField = (field, value) =>{
-    // switch(field) {
-    //   case 'title': {
-    //     let re = new RegExp('@|#');
-    //     if(!re.test(value) & value.length < 4 ){
-    //       document.getElementById('title').innerHTML='хэт богино гарчиг';
-    //       document.getElementById('title').style.color='red';
-    //     }
-    //     else{
-    //       document.getElementById('title').innerHTML='';
-    //     }
-    //     this.props.changeField(field, value)
-    //     return
-    //   }
-    //   case 'start_at': {
-    //     if( moment(this.props.start_at).format('LLL') <= moment(this.props.end_at).format('LLL') ) {
-    //       this.props.changeField('end_at', moment(value) )
-    //     }
-    //     this.props.changeField(field, value)
-    //     return
-    //   }
-    //   default: return this.props.changeField(field, value)
-    // }
-
-    this.props.changeField(field, value)
-
+    switch(field) {
+      case 'title': {
+        let re = new RegExp('@|#');
+        if(!re.test(value) & value.length < 4 ){
+          document.getElementById('title').innerHTML='хэт богино гарчиг';
+          document.getElementById('title').style.color='red';
+        }
+        else{
+          document.getElementById('title').innerHTML='';
+        }
+        this.props.changeField(field, value)
+        return
+      }
+      case 'start_at': {
+        if( moment(this.props.start_at).format('LLL') <= moment(this.props.end_at).format('LLL') ) {
+          this.props.changeField('end_at', moment(value) )
+        }
+        this.props.changeField(field, value)
+        return
+      }
+      default: return this.props.changeField(field, value)
+    }
+//    this.props.changeField(field, value)
   }
 
   render() {   
@@ -205,8 +211,10 @@ export default class AddEventForm extends Component {
                   selected={this.props.start_at}
                   onChange={ ( date ) => this.changeField( 'start_at', date) }
                   dateFormat="LL"
+                  minDate={ moment() }
                   />
               </label>  
+              <br/>
               <label className='marginLef'>Дуусах хугацаа
                 <DatePicker 
                   readOnly= {true}
@@ -214,6 +222,7 @@ export default class AddEventForm extends Component {
                   selected={this.props.end_at}
                   onChange={ ( date ) => this.changeField( 'end_at', date ) }
                   dateFormat="LL"
+                  minDate = { moment(this.props.start_at) }
                   />
               </label>
               <span id='endAt' className='endAt' ></span>
@@ -229,6 +238,7 @@ export default class AddEventForm extends Component {
                   dateFormat="LL"
                    />
               </label>  
+              <br/>
               <label className='marginLef'>Beeco дээрээс устах хугацаа
                 <DatePicker 
                   readOnly= {true}
@@ -238,7 +248,7 @@ export default class AddEventForm extends Component {
                   dateFormat="LL"
                      />
               </label>
-              <span id='endAt' className='endAt' ></span>
+              <span id='beeco_endAt' className='endAt' ></span>
             </div>
 
           </Form.Group>
@@ -259,7 +269,6 @@ export default class AddEventForm extends Component {
                 onLocationChanged = {this.props.onLocationChanged}
               />
             )}
-            
           </Form.Field>
           <Divider />
 

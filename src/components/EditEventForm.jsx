@@ -135,6 +135,7 @@ export default class EditEventForm extends React.Component {
                   dateFormat="LL"
                   minDate={moment()} />
               </label>  
+              <br/>
               <label className='marginLef'>Дуусах хугацаа
                 <DatePicker 
                   readOnly= {true}
@@ -156,7 +157,8 @@ export default class EditEventForm extends React.Component {
                   onChange={ ( date ) => this.changeField( 'beeco_start_at', date) }
                   dateFormat="LL"
                   minDate={moment()} />
-              </label>  
+              </label>
+              <br/>  
               <label className='marginLef'>Beeco дээрээс устах хугацаа
                 <DatePicker 
                   readOnly= {true}
