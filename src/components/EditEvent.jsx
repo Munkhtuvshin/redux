@@ -12,25 +12,9 @@ class EditEvent extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      navigate:false,
-    }
-  }
-
-  editEvent = (event) => {
-    this.props.editEvent(event)
-    this.setState({ navigate: true })
   }
 
   render() {
-    let {
-      navigate,
-    } = this.state
-
-    if (navigate) {
-      return <Redirect to="/eventlist" push={true} />
-    }
-
     const { dispatch, selected_event, edit_event_editor } = this.props
 
     return (
@@ -40,7 +24,7 @@ class EditEvent extends Component {
             key={selected_event.id}//i is this loop's iteration
             {...selected_event}
             {...edit_event_editor}
-            editEvent = {this.editEvent}
+            editEvent = {this.props.editEvent}
             editOnChanged = {this.props.editOnChanged }
             editOnStartAtChanged = {this.props.editOnStartAtChanged}
             editOnEndAtChanged = {this.props.editOnEndAtChanged}

@@ -10,13 +10,18 @@ export default class EditGMap extends React.Component {
   
 	constructor(props) {
 	  super(props);
+	  this.state=this.props.coordinate
 	}
+
+	changeMarker = (value) => {
+  	this.setState({ lat:value.lat, lng:value.lng})
+  }
 
   render(){
   	let g = this.props.coordinate
   	console.log(g);
     return (
-		  <Modal open={this.props.showmap}>
+		  <Modal open={this.props.showmap} onClose={ this.props.showMap } >
 	      <Modal.Header>Байршил сонгох</Modal.Header>
 	      <Modal.Content >
 	        <Modal.Description>
@@ -25,10 +30,10 @@ export default class EditGMap extends React.Component {
 		            bootstrapURLKeys={{ key:'AIzaSyAGitiN41FPl8mcC3zBN7yC9Av9y5CJxEc' }}
 			        	center= { this.props.coordinate }
 			        	zoom={8}
-			        	onClick={(value) => this.props.onLocationChanged(value)}>
+			        	onClick={ (value) => this.shangeMaeker(value) }>
 						    <CustomMarker
-						      lat={ this.props.coordinate.lat }
-							  	lng={ this.props.coordinate.lng }
+						      lat={ this.state.lat }
+							  	lng={ this.state.lng }
 						      text=" ">
 					      </CustomMarker>
 			      	</GoogleMap>
@@ -38,15 +43,15 @@ export default class EditGMap extends React.Component {
 
 	      <Modal.Actions>
 	        <Button primary onClick={this.addLocation}>
-	          Proceed <Icon name='right chevron' />
+	          Өөрчлөх <Icon name='right chevron' />
 	        </Button>
 	      </Modal.Actions>
 	    </Modal>
 		)
   }
 
-  addLocation = (coordinate) =>{
-    this.props.showMap()
+  addLocation = () =>{
+    this.props.onLocationChanged(this.state)
   }
 
 }

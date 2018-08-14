@@ -41,7 +41,6 @@ export default class EditEventForm extends React.Component {
   editevent = () => {
     let { _id, title,  cover_url, start_at, end_at, coordinate, beeco_start_at, beeco_end_at } = this.props
     let event = { _id, title, cover_url, start_at, end_at, coordinate, beeco_start_at, beeco_end_at };
-    //console.log(event);
     this.props.editEvent(event);
   }
 
@@ -106,7 +105,6 @@ export default class EditEventForm extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="addForm">
         <Form method="post" encType="multipart/form-data" className='addform' >
@@ -178,6 +176,7 @@ export default class EditEventForm extends React.Component {
           <Form.Field>
             <center>
               <Button onClick={this.props.editShowMap} >Байршил сонгох</Button> 
+               <span className='marleft' >{ this.props.addressName }</span>
               {!!this.props.showmap && (
                  <GMap 
                   showmap={this.props.showmap}
@@ -288,7 +287,7 @@ export default class EditEventForm extends React.Component {
 
           </Form.Group>
           <Form.Field  className='cent'>
-            <Button type='submit' primary className='center' onClick={this.editevent} content='Засах'/>
+            <Link to='/eventlist' > <Button primary className='center' onClick={ this.editevent } content='Засах'/> </Link>
           </Form.Field>
 
         </Form>

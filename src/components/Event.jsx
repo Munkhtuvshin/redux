@@ -23,7 +23,6 @@ export default class Event extends React.Component {
       rowNumber
     } = this.props
     var clr=''
-    console.log( this.props ) 
     if(moment()< moment(this.props.end_at) & moment()>moment(this.props.start_at) ) {
       clr = 'warning'
     }
@@ -42,7 +41,7 @@ export default class Event extends React.Component {
         <Table.Cell>{moment.utc(this.props.end_at).format('LL')}</Table.Cell>
         <Table.Cell>{moment.utc(this.props.beeco_start_at).format('LL')}</Table.Cell>
         <Table.Cell>{moment.utc(this.props.beeco_end_at).format('LL')}</Table.Cell>
-        <Table.Cell>{this.props.coordinate.lat}, {this.props.coordinate.lng}</Table.Cell>
+        <Table.Cell>{this.props.coordinate.addressName}</Table.Cell>
         
         <Table.Cell>
           <center>

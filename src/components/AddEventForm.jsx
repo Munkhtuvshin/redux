@@ -177,9 +177,15 @@ export default class AddEventForm extends Component {
         this.props.changeField(field, value)
         return
       }
+      case 'beeco_start_at': {
+        if( moment(this.props.beeco_start_at).format('LLL') <= moment(this.props.beeco_end_at).format('LLL') ) {
+          this.props.changeField('beeco_end_at', moment(value) )
+        }
+        this.props.changeField(field, value)
+        return
+      }
       default: return this.props.changeField(field, value)
     }
-//    this.props.changeField(field, value)
   }
 
   render() {   
@@ -204,7 +210,7 @@ export default class AddEventForm extends Component {
 
           <Form.Group widths='equal'>
             <div className='fullwidth'>
-              <label className='self' htmlFor="start_at" >Эхлэх хугацаа
+              <label className='self' htmlFor="end_at" >Эхлэх хугацаа
                 <DatePicker
                   readOnly={true}
                   id = "start_at"
@@ -215,7 +221,7 @@ export default class AddEventForm extends Component {
                   />
               </label>  
               <br/>
-              <label className='marginLef'>Дуусах хугацаа
+              <label className='marginLef' htmlFor="beeco_start_at" >Дуусах хугацаа
                 <DatePicker 
                   readOnly= {true}
                   id = "end_at"
@@ -229,25 +235,28 @@ export default class AddEventForm extends Component {
             </div>
 
             <div className='fullwidth' >  
-              <label className='self' htmlFor="start_at" >Beeco дээр тавих хугацаа
+              <label className='self' htmlFor="beeco_end_at" >Beeco дээр тавих хугацаа
                 <DatePicker
                   readOnly={true}
-                  id = "start_at"
+                  id = "beeco_start_at"
                   selected={this.props.beeco_start_at}
                   onChange={ ( date ) => this.changeField( 'beeco_start_at', date) }
                   dateFormat="LL"
+                  minDate={ moment() }
                    />
+                  
               </label>  
               <br/>
-              <label className='marginLef'>Beeco дээрээс устах хугацаа
+              <label className='marginLef'>Beeco дээрээс устах хугацаа</label>
                 <DatePicker 
                   readOnly= {true}
-                  id = "end_at"
+                  id = "beeco_end_at"
                   selected={this.props.beeco_end_at}
                   onChange={ ( date ) => this.changeField( 'beeco_end_at', date ) }
                   dateFormat="LL"
+                  minDate = { moment(this.props.beeco_start_at) }
                      />
-              </label>
+              
               <span id='beeco_endAt' className='endAt' ></span>
             </div>
 

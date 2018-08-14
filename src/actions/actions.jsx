@@ -38,9 +38,9 @@ export function addEvent(event) {
   formdata.append('end_at', event.end_at);
   formdata.append('lat', event.coordinate.lat);
   formdata.append('lng', event.coordinate.lng);
+  formdata.append('addressName', event.coordinate.addressName);
   formdata.append('beeco_start_at', event.beeco_start_at);
   formdata.append('beeco_end_at', event.beeco_end_at);
-  //console.log(data);
   return dispatch => {
     axios({
     method: 'post',
@@ -75,6 +75,7 @@ export function editEvent(event) {
     config: { headers: {'Content-Type': 'multipart/form-data' }}
     })
     .then(function (response) {
+        console.log('edit action')
         dispatch( {
           type: EDIT_EVENT,
           event,
@@ -106,7 +107,6 @@ export function setAllEvent() {
   return dispatch => {
     axios.get('http://localhost:8081/event')
     .then( (events) =>{           
-      console.log(events.data)
       dispatch({
         type: SET_ALL_EVENT,
         events,
@@ -118,8 +118,7 @@ export function setAllEvent() {
 export function onLocationChanged(value) {
   return dispatch => {
     axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+value.lat+','+value.lng )
-    .then( ( response ) =>{    
-    console.log(response.data)       
+    .then( ( response ) =>{          
       dispatch({
         type: CHANGE_LOCATION,
         address_name: response.data.results[0].formatted_address,
@@ -201,8 +200,6 @@ export function editOnChanged(type, value) {
   }     
 }
 export function editOnStartAtChanged(value) {
-    console.log('actionn  :')
-    console.log(value)
   return {
     type: EDIT_CHANGE_START_AT,
     value

@@ -41,6 +41,8 @@ function events(state = eventInitial, action) {
       var index = events.findIndex((event) => {
         return event.get('_id') == action.event._id
       })
+      console.log('edit event vent')
+      console.log(index)
       return state.setIn(['events', index], fromJS(action.event));
     }
     case SET_EVENT: {
@@ -129,6 +131,7 @@ function events(state = eventInitial, action) {
       let tmp = state.getIn(['selected_event']).toJS();
       tmp.coordinate.lat = action.value.lat;
       tmp.coordinate.lng = action.value.lng;
+      tmp.coordinate.addressName = action.value.addressName;
       return state.set('selected_event', fromJS(tmp));
     }
     case EDIT_SHOWMAP: {
