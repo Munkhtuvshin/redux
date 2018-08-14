@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Redirect  } from 'react-router-dom'
 import { editEvent, editOnChanged, editOnStartAtChanged, editOnEndAtChanged, editOnLocationChanged, editShowMap, editOnCoverChanged,
-          edit_handleScale, edit_handlePositionChange, edit_handleXPosition, edit_handleYPosition, edit_setPreview 
+          edit_handleScale, edit_handlePositionChange, edit_handleXPosition, edit_handleYPosition, edit_setPreview,
+          editchangeField
         } from '../actions/actions'
 
 class EditEvent extends Component {
@@ -51,6 +52,7 @@ class EditEvent extends Component {
             edit_handleXPosition = {this.props.edit_handleXPosition}
             edit_handleYPosition = {this.props.edit_handleYPosition}
             edit_setPreview = {this.props.edit_setPreview}
+            editchangeField = {this.props.editchangeField}
           />
         }
       </div>
@@ -79,10 +81,11 @@ function mapDispatchToProps( dispatch ) {
     edit_handleXPosition: bindActionCreators(edit_handleXPosition, dispatch),
     edit_handleYPosition: bindActionCreators(edit_handleYPosition, dispatch),
     edit_setPreview: bindActionCreators(edit_setPreview, dispatch),
+    editchangeField: bindActionCreators(editchangeField, dispatch),
   }
 }
 
 export default connect( select, mapDispatchToProps )( EditEvent, editEvent, editOnChanged, editOnStartAtChanged, editOnEndAtChanged, editOnLocationChanged, editShowMap, editOnCoverChanged, 
-                        edit_handleYPosition, edit_handleXPosition, edit_handlePositionChange, edit_handleScale, edit_setPreview
+                        edit_handleYPosition, edit_handleXPosition, edit_handlePositionChange,editchangeField, edit_handleScale, edit_setPreview
                       );
 

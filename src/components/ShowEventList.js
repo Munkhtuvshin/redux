@@ -35,6 +35,8 @@ export default class ShowEventList extends Component {
                 <Table.HeaderCell>Гарчиг</Table.HeaderCell>
                 <Table.HeaderCell>Эхлэх хугацаа</Table.HeaderCell>
                 <Table.HeaderCell>Дуусах хугацаа</Table.HeaderCell>
+                <Table.HeaderCell>Beeco-д тавих хугацаа</Table.HeaderCell>
+                <Table.HeaderCell>Beeco-д устах хугацаа</Table.HeaderCell>
                 <Table.HeaderCell>Байршил</Table.HeaderCell>
                 <Table.HeaderCell>Засах</Table.HeaderCell>
                 <Table.HeaderCell>Устгах</Table.HeaderCell>

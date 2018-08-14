@@ -44,9 +44,47 @@ export default class AddEventForm extends Component {
   }
 
   addevent = () => {
-    let { title,  cover_url, start_at, end_at, coordinate } = this.props
-    let event = { title, cover_url, start_at, end_at, coordinate };
-    this.props.addEvent(event);
+    let { title,  cover_url, start_at, end_at, coordinate, beeco_start_at, beeco_end_at } = this.props
+    let event = { title, cover_url, start_at, end_at, coordinate, beeco_end_at, beeco_start_at };
+    let counter = 0;
+    var re = new RegExp('@|#');
+   
+    if(re.test(title) | title.length < 4) {
+      document.getElementById('title').innerHTML=' Хэт богино эсвэл хориотой тэмдэгт орсон байна.';
+      document.getElementById('title').style.color='red';
+      counter++;
+    }
+    else{
+      document.getElementById('title').innerHTML='';
+    }
+    if( moment(start_at).format('LLL')==moment(end_at).format('LLL') ) {
+      document.getElementById('endAt').innerHTML = ' Эхлэх хугацаа Дуусах хугацаа хоёр давхцсан байна'
+      document.getElementById('endAt').style.color = 'red'
+      counter++;
+    }
+    else{
+      document.getElementById('endAt').innerHTML = ''
+    }
+    if( cover_url == ''){
+      document.getElementById('coverUrl').innerHTML = ' Зураг оруулна уу'
+      document.getElementById('coverUrl').style.color = 'red'
+      counter++;
+    }
+    else{
+      document.getElementById('coverUrl').innerHTML = ''
+    }
+    if( coordinate.lat==47.78963221880257 & coordinate.lng==107.38140106201172 ) {
+      document.getElementById('location').innerHTML = ' Байршил оруулна уу'
+      document.getElementById('location').style.color = 'red'
+      counter++;
+    }
+    else{
+      document.getElementById('location').innerHTML = ''
+    }
+    if(counter==0) {
+      this.props.addEvent(event);
+      document.getElementById('addConfirm').click()
+    }
   }
 
   handleScale = e => {
@@ -106,112 +144,133 @@ export default class AddEventForm extends Component {
     })
   }
 
-  onChanged (event) {
-    switch(event.target.id) {
-      case "tit": {
-        this.props.onChanged(1, event.target.value)
-      }
-    }
-  }
-
-  onStartAtChanged = (date) =>{
-    this.props.onStartAtChanged(date)
-  }
-
-  onEndAtChanged = (date) => {
-    this.props.onEndAtChanged(date)
-  }
-  onCoverChanged = (e) => {
-    this.props.onCoverChanged(e.target.files[0])
-  }
   uploadFile = (event) => {
     ReactDOM.findDOMNode(this.refs.myInput).click();
   }
 
-  render() {
-    // console.log('add event form');    
+  changeField = (field, value) =>{
+    // switch(field) {
+    //   case 'title': {
+    //     let re = new RegExp('@|#');
+    //     if(!re.test(value) & value.length < 4 ){
+    //       document.getElementById('title').innerHTML='хэт богино гарчиг';
+    //       document.getElementById('title').style.color='red';
+    //     }
+    //     else{
+    //       document.getElementById('title').innerHTML='';
+    //     }
+    //     this.props.changeField(field, value)
+    //     return
+    //   }
+    //   case 'start_at': {
+    //     if( moment(this.props.start_at).format('LLL') <= moment(this.props.end_at).format('LLL') ) {
+    //       this.props.changeField('end_at', moment(value) )
+    //     }
+    //     this.props.changeField(field, value)
+    //     return
+    //   }
+    //   default: return this.props.changeField(field, value)
+    // }
+
+    this.props.changeField(field, value)
+
+  }
+
+  render() {   
     return (
       <div className="addForm">
-        <Form method="post" encType="multipart/form-data">
+        <Form method="post" encType="multipart/form-data" className='addform' >
           <Form.Field>
             <label>Гарчиг</label>
             <input 
             ref = "title1"
             id = "tit"
             type='text'
+            className='ad'
             value={this.props.title}
-            onChange={ ( event ) => this.onChanged( event ) }
+            onChange={ ( event ) => this.changeField( 'title', event.target.value ) }
             placeholder='Гарчиг'
             />
+            <span id='title' className='titlespan' ></span>
           </Form.Field>
 
           <Divider />
 
           <Form.Group widths='equal'>
-            <label className='self' htmlFor="start_at" >Эхлэх хугацаа</label>
-            <DatePicker
-              readOnly={true}
-              id = "start_at"
-              selected={this.props.start_at}
-              onChange={ this.onStartAtChanged }
-              dateFormat="LL" />
-            <label className='marginLef'>Дуусах хугацаа</label>
-            <DatePicker 
-              readOnly= {true}
-              id = "end_at"
-              selected={this.props.end_at}
-              onChange={ this.onEndAtChanged }
-              dateFormat="LL" />
+            <div className='fullwidth'>
+              <label className='self' htmlFor="start_at" >Эхлэх хугацаа
+                <DatePicker
+                  readOnly={true}
+                  id = "start_at"
+                  selected={this.props.start_at}
+                  onChange={ ( date ) => this.changeField( 'start_at', date) }
+                  dateFormat="LL"
+                  />
+              </label>  
+              <label className='marginLef'>Дуусах хугацаа
+                <DatePicker 
+                  readOnly= {true}
+                  id = "end_at"
+                  selected={this.props.end_at}
+                  onChange={ ( date ) => this.changeField( 'end_at', date ) }
+                  dateFormat="LL"
+                  />
+              </label>
+              <span id='endAt' className='endAt' ></span>
+            </div>
+
+            <div className='fullwidth' >  
+              <label className='self' htmlFor="start_at" >Beeco дээр тавих хугацаа
+                <DatePicker
+                  readOnly={true}
+                  id = "start_at"
+                  selected={this.props.beeco_start_at}
+                  onChange={ ( date ) => this.changeField( 'beeco_start_at', date) }
+                  dateFormat="LL"
+                   />
+              </label>  
+              <label className='marginLef'>Beeco дээрээс устах хугацаа
+                <DatePicker 
+                  readOnly= {true}
+                  id = "end_at"
+                  selected={this.props.beeco_end_at}
+                  onChange={ ( date ) => this.changeField( 'beeco_end_at', date ) }
+                  dateFormat="LL"
+                     />
+              </label>
+              <span id='endAt' className='endAt' ></span>
+            </div>
+
           </Form.Group>
+
           <Divider />
 
           <Form.Field>
-            <center>
-              <Button onClick={this.props.showMap} >Байршил сонгох</Button> 
-              {!!this.props.showmap && (
-                 <GMap 
-                  showmap={this.props.showmap}
-                  showMap={this.props.showMap}
-                  coordinate={this.props.coordinate}
-                  addLocation={this.addLocation}
-                  onLocationChanged = {this.props.onLocationChanged}
-                />
-              )}
-
-            </center>
+            <Button onClick={ this.props.showMap } >Байршил сонгох</Button> 
+            <span className='marleft' >{ this.props.coordinate.addressName }</span> 
+            <span id='location' className='locationspan' ></span>
+            {!!this.props.showmap && (
+               <GMap 
+                showmap={this.props.showmap}
+                showMap={this.props.showMap}
+                onClose={this.props.showMap}
+                coordinate={this.props.coordinate}
+                addLocation={this.addLocation}
+                onLocationChanged = {this.props.onLocationChanged}
+              />
+            )}
+            
           </Form.Field>
           <Divider />
 
           <Form.Group widths='equal'>
-            <Form.Field>
-              <Dropzone
-                onDrop={this.handleDrop}
-                disableClick
-                multiple={false}
-                style={{ width: this.props.width, height: this.props.height, marginBottom:'35px' }} >
-                <div>
-                  <AvatarEditor
-                    ref={this.setEditorRef}
-                    scale={parseFloat(this.props.scale)}
-                    width={this.props.width}
-                    height={this.props.height}
-                    position={this.props.position}
-                    onPositionChange={this.handlePositionChange}
-                    borderRadius={this.props.width / (100 / this.props.borderRadius)}
-                    onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-                    onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-                    onImageReady={this.logCallback.bind(this, 'onImageReady')}
-                    image={this.props.cover_url}
-                    className="editor-canvas"
-                  />
-                </div>
-              </Dropzone>
-            </Form.Field>
-
+            
               <Form.Field>
               <Segment >
-                <input name="newImage" type="file" id='file' ref = "myInput" className='displayNone' onChange={ this.onCoverChanged } />
+                <input name="newImage" type="file" id='file' ref = "myInput" accept=".gif, .jpg, .png" className='displayNone' 
+                  onChange={ ( e ) => this.changeField( 'cover_url', e.target.files[0] ) } />
                 <Button onClick={this.uploadFile} basic color='blue' content='Зураг сонгох' />
+                <span id='coverUrl' className='fnt'></span>
                 <br/>
                 <br/>
                 <label className='inputLabel'>Zoom: </label>
@@ -276,9 +335,34 @@ export default class AddEventForm extends Component {
               </Segment>
             </Form.Field>
 
+            <Form.Field>
+              <Dropzone
+                onDrop={this.handleDrop}
+                disableClick
+                multiple={false}
+                style={{ width: this.props.width, height: this.props.height, marginBottom:'35px' }} >
+                <div>
+                  <AvatarEditor
+                    ref={this.setEditorRef}
+                    scale={parseFloat(this.props.scale)}
+                    width={this.props.width}
+                    height={this.props.height}
+                    position={this.props.position}
+                    onPositionChange={this.handlePositionChange}
+                    borderRadius={this.props.width / (100 / this.props.borderRadius)}
+                    onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+                    onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+                    onImageReady={this.logCallback.bind(this, 'onImageReady')}
+                    image={this.props.cover_url}
+                    className="editor-canvas"
+                  />
+                </div>
+              </Dropzone>
+            </Form.Field>
           </Form.Group>
-            <Form.Field  className='cent'>
-              <Link to="/eventlist"> <Button type='submit' primary className='center' onClick={this.addevent} content='Нэмэх'/> </Link>
+            <Form.Field >
+              <Button type='submit' primary className='center' onClick={this.addevent} content='Нэмэх'/>
+              <Link to='/eventlist' id='addConfirm' ></Link>
           </Form.Field>
 
         </Form>

@@ -1,22 +1,50 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom';
 import GoogleMap from 'google-map-react';
+import styled from 'styled-components';
 import { Button, Modal, Header, Icon, Image } from 'semantic-ui-react'
 import './Gmap.css';
 
-const CustomMarker = ({ text, }) => (<div className='klass' >{text}</div>)
+const CustomMarke = ({ text, }) => (<div className='klass' >{text}</div>)
+
+const CustomMarker = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  padding: 0px 3px 3px 0;
+  border-radius: 50% 50% 50% 0%;
+  box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  background: red;
+  transform: translate(-50%, -50%) rotateX(20deg) rotateZ(-45deg);
+  transform-origin: 50% 50%;
+
+  & > span {
+    display: none;
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    transform: rotate(45deg);
+    font-size: 16px;
+    color: red;
+  }
+`;
 
 export default class GMap extends React.Component {
   
 	constructor(props) {
 	  super(props);
+	  this.state=this.props.coordinate
 	}
 
+	onLocationChanged = (value) => {
+		this.setState({ lat:value.lat, lng:value.lng})
+	}
   render(){
-  	let g = this.props.coordinate
-  	console.log(g);
+  	console.log(this.state);
     return (
-		  <Modal open={this.props.showmap}>
+		  <Modal open={this.props.showmap} onClose={this.props.onClose}>
 	      <Modal.Header>Байршил сонгох</Modal.Header>
 	      <Modal.Content >
 	        <Modal.Description>
@@ -25,10 +53,10 @@ export default class GMap extends React.Component {
 		            bootstrapURLKeys={{ key:'AIzaSyAGitiN41FPl8mcC3zBN7yC9Av9y5CJxEc' }}
 			        	center= { { lat: parseFloat(this.props.coordinate.lat), lng: parseFloat(this.props.coordinate.lng) } }
 			        	zoom={8}
-			        	onClick={(value) => this.props.onLocationChanged(value)}>
+			        	onClick={(value) => this.onLocationChanged(value)}>
 						    <CustomMarker
-						      lat={ this.props.coordinate.lat }
-							  	lng={ this.props.coordinate.lng }
+						      lat={ this.state.lat }
+							    lng={ this.state.lng }
 						      text=" ">
 					      </CustomMarker>
 			      	</GoogleMap>
@@ -38,14 +66,15 @@ export default class GMap extends React.Component {
 
 	      <Modal.Actions>
 	        <Button primary onClick={this.addLocation}>
-	          Proceed <Icon name='right chevron' />
+	          Хадгалах <Icon name='right chevron' />
 	        </Button>
 	      </Modal.Actions>
 	    </Modal>
 		)
   }
-
   addLocation = (coordinate) =>{
+  	
+    this.props.onLocationChanged(this.state)
     this.props.showMap()
   }
 

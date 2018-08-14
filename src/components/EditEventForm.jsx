@@ -39,8 +39,8 @@ export default class EditEventForm extends React.Component {
   }
 
   editevent = () => {
-    let { _id, title,  cover_url, start_at, end_at, coordinate } = this.props
-    let event = { _id, title, cover_url, start_at, end_at, coordinate };
+    let { _id, title,  cover_url, start_at, end_at, coordinate, beeco_start_at, beeco_end_at } = this.props
+    let event = { _id, title, cover_url, start_at, end_at, coordinate, beeco_start_at, beeco_end_at };
     //console.log(event);
     this.props.editEvent(event);
   }
@@ -101,12 +101,15 @@ export default class EditEventForm extends React.Component {
   onEndAtChanged = (date) => {
     this.props.editOnEndAtChanged(date._d)
   }
+  changeField = (field, value ) => {
+    this.props.editchangeField(field, value)
+  }
 
   render() {
     console.log(this.props)
     return (
       <div className="addForm">
-        <Form method="post" encType="multipart/form-data">
+        <Form method="post" encType="multipart/form-data" className='addform' >
           <Form.Field>
             <label>Гарчиг</label>
             <input 
@@ -114,27 +117,58 @@ export default class EditEventForm extends React.Component {
             id = "tit"
             type='text'
             value={this.props.title}
-            onChange={ ( event ) => this.onChanged( event ) }
+            onChange={ ( event ) => this.changeField( 'title', event.target.value ) }
             placeholder = 'Гарчиг' />
           </Form.Field>
 
           <Divider />
 
           <Form.Group widths = 'equal'>
-            <label className='self' htmlFor="start_at" >Эхлэх хугацаа</label>
-            <DatePicker
-              readOnly={true}
-              id = "start_at"
-              selected={ moment(this.props.start_at) }
-              onChange={ this.onStartAtChanged }
-              dateFormat="LL" />
-            <label className='marginLef'>Дуусах хугацаа</label>
-            <DatePicker 
-              readOnly= {true}
-              id = "end_at"
-              selected={moment(this.props.end_at)}
-              onChange={ this.onEndAtChanged }
-              dateFormat="LL" />
+
+             <div className='fullwidth'>
+              <label className='self' htmlFor="start_at" >Эхлэх хугацаа
+                <DatePicker
+                  readOnly={true}
+                  id = "start_at"
+                  selected={moment(this.props.start_at)}
+                  onChange={ ( date ) => this.changeField( 'start_at', date) }
+                  dateFormat="LL"
+                  minDate={moment()} />
+              </label>  
+              <label className='marginLef'>Дуусах хугацаа
+                <DatePicker 
+                  readOnly= {true}
+                  id = "end_at"
+                  selected={moment(this.props.end_at)}
+                  onChange={ ( date ) => this.changeField( 'end_at', date ) }
+                  dateFormat="LL"
+                  minDate= {moment(this.props.start_at)} />
+              </label>
+              <span id='endAt' className='endAt' ></span>
+            </div>
+
+              <div className='fullwidth' >  
+              <label className='self' htmlFor="start_at" >Beeco дээр тавих хугацаа
+                <DatePicker
+                  readOnly={true}
+                  id = "start_at"
+                  selected={moment(this.props.beeco_start_at)}
+                  onChange={ ( date ) => this.changeField( 'beeco_start_at', date) }
+                  dateFormat="LL"
+                  minDate={moment()} />
+              </label>  
+              <label className='marginLef'>Beeco дээрээс устах хугацаа
+                <DatePicker 
+                  readOnly= {true}
+                  id = "end_at"
+                  selected={moment(this.props.beeco_end_at)}
+                  onChange={ ( date ) => this.changeField( 'beeco_end_at', date ) }
+                  dateFormat="LL"
+                  minDate= {moment(this.props.beeco_start_at)} />
+              </label>
+              <span id='endAt' className='endAt' ></span>
+            </div>
+
           </Form.Group>
 
           <Divider />
@@ -156,30 +190,6 @@ export default class EditEventForm extends React.Component {
           <Divider />
 
           <Form.Group widths='equal'>
-            <Form.Field>
-              <Dropzone
-                onDrop={this.handleDrop}
-                disableClick
-                multiple={false}
-                style={{ width: this.props.width, height: this.props.height, marginBottom:'35px' }} >
-                <div>
-                  <AvatarEditor
-                    ref={this.setEditorRef}
-                    scale={parseFloat(this.props.scale)}
-                    width={this.props.width}
-                    height={this.props.height}
-                    position={this.props.position}
-                    onPositionChange={this.handlePositionChange}
-                    borderRadius={this.props.width / (100 / this.props.borderRadius)}
-                    onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-                    onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-                    onImageReady={this.logCallback.bind(this, 'onImageReady')}
-                    image={this.props.cover_url}
-                    className="editor-canvas"
-                  />
-                </div>
-              </Dropzone>
-            </Form.Field>
 
               <Form.Field>
               <Segment >
@@ -247,6 +257,31 @@ export default class EditEventForm extends React.Component {
                   />
                 )}
               </Segment>
+            </Form.Field>
+
+            <Form.Field>
+              <Dropzone
+                onDrop={this.handleDrop}
+                disableClick
+                multiple={false}
+                style={{ width: this.props.width, height: this.props.height, marginBottom:'35px' }} >
+                <div>
+                  <AvatarEditor
+                    ref={this.setEditorRef}
+                    scale={parseFloat(this.props.scale)}
+                    width={this.props.width}
+                    height={this.props.height}
+                    position={this.props.position}
+                    onPositionChange={this.handlePositionChange}
+                    borderRadius={this.props.width / (100 / this.props.borderRadius)}
+                    onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+                    onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+                    onImageReady={this.logCallback.bind(this, 'onImageReady')}
+                    image={this.props.cover_url}
+                    className="editor-canvas"
+                  />
+                </div>
+              </Dropzone>
             </Form.Field>
 
           </Form.Group>
